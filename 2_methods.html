@@ -1,0 +1,796 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.6.39">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+
+<title>methods – Emergency Rental Assistance County-level Aggregations</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+</style>
+
+
+<script src="site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="site_libs/quarto-nav/headroom.min.js"></script>
+<script src="site_libs/clipboard/clipboard.min.js"></script>
+<script src="site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="site_libs/quarto-search/fuse.min.js"></script>
+<script src="site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="./">
+<script src="site_libs/quarto-html/quarto.js"></script>
+<script src="site_libs/quarto-html/popper.min.js"></script>
+<script src="site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="site_libs/quarto-html/anchor.min.js"></script>
+<link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting-e26003cea8cd680ca0c55a263523d882.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="site_libs/bootstrap/bootstrap-6bd9cfa162949bde0a231f530c97869d.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "navbar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "end",
+  "type": "overlay",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+
+
+<link rel="stylesheet" href="styles.css">
+</head>
+
+<body class="floating nav-fixed">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+    <nav class="navbar navbar-expand-lg " data-bs-theme="dark">
+      <div class="navbar-container container-fluid">
+      <div class="navbar-brand-container mx-auto">
+    <a class="navbar-brand" href="./index.html">
+    <span class="navbar-title">Emergency Rental Assistance County-level Aggregations</span>
+    </a>
+  </div>
+            <div id="quarto-search" class="" title="Search"></div>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" role="menu" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+  <span class="navbar-toggler-icon"></span>
+</button>
+          <div class="collapse navbar-collapse" id="navbarCollapse">
+            <ul class="navbar-nav navbar-nav-scroll me-auto">
+  <li class="nav-item">
+    <a class="nav-link" href="./0_about.html"> 
+<span class="menu-text">About</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="./1_aggregations.html"> 
+<span class="menu-text">Download data</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link active" href="./2_methods.html" aria-current="page"> 
+<span class="menu-text">Methods</span></a>
+  </li>  
+</ul>
+          </div> <!-- /navcollapse -->
+            <div class="quarto-navbar-tools">
+</div>
+      </div> <!-- /container-fluid -->
+    </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
+<!-- sidebar -->
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation floating overflow-auto">
+    <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">On this page</h2>
+   
+  <ul>
+  <li><a href="#methods" id="toc-methods" class="nav-link active" data-scroll-target="#methods">Methods</a>
+  <ul class="collapse">
+  <li><a href="#step-0-grantee-metadata" id="toc-step-0-grantee-metadata" class="nav-link" data-scroll-target="#step-0-grantee-metadata">Step 0: Grantee metadata</a></li>
+  <li><a href="#step-1-geocode" id="toc-step-1-geocode" class="nav-link" data-scroll-target="#step-1-geocode">Step 1: Geocode</a></li>
+  <li><a href="#step-2-initial-validation" id="toc-step-2-initial-validation" class="nav-link" data-scroll-target="#step-2-initial-validation">Step 2: Initial validation</a></li>
+  <li><a href="#step-3-deduplication" id="toc-step-3-deduplication" class="nav-link" data-scroll-target="#step-3-deduplication">Step 3: Deduplication</a>
+  <ul class="collapse">
+  <li><a href="#across-grantee" id="toc-across-grantee" class="nav-link" data-scroll-target="#across-grantee">Across-grantee</a></li>
+  <li><a href="#across-file" id="toc-across-file" class="nav-link" data-scroll-target="#across-file">Across-file</a></li>
+  <li><a href="#within-file" id="toc-within-file" class="nav-link" data-scroll-target="#within-file">Within-file</a></li>
+  <li><a href="#extent-of-duplication" id="toc-extent-of-duplication" class="nav-link" data-scroll-target="#extent-of-duplication">Extent of duplication</a></li>
+  </ul></li>
+  <li><a href="#step-4-county-imputation" id="toc-step-4-county-imputation" class="nav-link" data-scroll-target="#step-4-county-imputation">Step 4: County imputation</a>
+  <ul class="collapse">
+  <li><a href="#use-grantee-geography-for-countiessingle-county-cities" id="toc-use-grantee-geography-for-countiessingle-county-cities" class="nav-link" data-scroll-target="#use-grantee-geography-for-countiessingle-county-cities">Use grantee geography for counties/single-county cities</a></li>
+  <li><a href="#use-city-zip-county-crosswalk-for-states" id="toc-use-city-zip-county-crosswalk-for-states" class="nav-link" data-scroll-target="#use-city-zip-county-crosswalk-for-states">Use City + ZIP : county crosswalk for states</a></li>
+  <li><a href="#coalesce-county_geoid" id="toc-coalesce-county_geoid" class="nav-link" data-scroll-target="#coalesce-county_geoid">Coalesce <code>county_geoid</code></a></li>
+  </ul></li>
+  <li><a href="#step-5-variable-checks" id="toc-step-5-variable-checks" class="nav-link" data-scroll-target="#step-5-variable-checks">Step 5: Variable checks</a></li>
+  <li><a href="#step-6-thresholding" id="toc-step-6-thresholding" class="nav-link" data-scroll-target="#step-6-thresholding">Step 6: Thresholding</a></li>
+  <li><a href="#step-7-pre-aggregation" id="toc-step-7-pre-aggregation" class="nav-link" data-scroll-target="#step-7-pre-aggregation">Step 7: Pre-aggregation</a></li>
+  <li><a href="#step-8-aggregation" id="toc-step-8-aggregation" class="nav-link" data-scroll-target="#step-8-aggregation">Step 8: Aggregation</a></li>
+  </ul></li>
+  </ul>
+</nav>
+</nav>
+<div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar zindex-bottom">
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content"><header id="title-block-header" class="quarto-title-block"></header>
+
+
+
+
+<section id="methods" class="level1">
+<h1>Methods</h1>
+<p>Here, we detail our data cleaning and processing methodology. For more details on the raw data, please see <a href="./0_about.html#data-sources">this section</a> from the project’s ‘About’ page.</p>
+<section id="step-0-grantee-metadata" class="level2">
+<h2 class="anchored" data-anchor-id="step-0-grantee-metadata">Step 0: Grantee metadata</h2>
+<p>We began by preparing grantee metadata to be used in all subsequent steps. We took as our input a structured list of ERA1 and ERA2 grantees compiled by the National Low Income Housing Coalition (NLIHC).</p>
+<p>We also generated geographic crosswalks between grantees and Census geographies, as well as between city-level grantees and county-level grantees.</p>
+</section>
+<section id="step-1-geocode" class="level2">
+<h2 class="anchored" data-anchor-id="step-1-geocode">Step 1: Geocode</h2>
+<p>The ERA1 closeout PHPDHF as well as the ERA2 Q4 and reachback PHPDFs had geocoding outputs in a separate file. In this step, we compared the payment files and their corresponding geocodes, and verified that all rows join.</p>
+<p>The following number of rows were present in the payments file but not in the geocoded file: we geocoded these ourselves, using the Census geocoder.</p>
+<ul>
+<li>ERA1 closeout: 77 rows</li>
+<li>ERA2 Q4: 24,394 rows</li>
+<li>ERA2 reachback: 0 rows (all rows already geocoded by HUD)</li>
+</ul>
+<p>The other ERA2 PHPDFs already had geocodes appended to the payment data in a single file.</p>
+</section>
+<section id="step-2-initial-validation" class="level2">
+<h2 class="anchored" data-anchor-id="step-2-initial-validation">Step 2: Initial validation</h2>
+<p>In this step, we performed preliminary data-cleaning steps to normalize the formatting of the data. Each PHPDF (one for ERA1 and four for ERA2) was processed independently.</p>
+<ul>
+<li>Standardizing variable names
+<ul>
+<li>Ensuring compatibility between PHPDF files</li>
+</ul></li>
+<li>Standardizing variable types
+<ul>
+<li>Treating GEOIDs as appropriately left-padded strings</li>
+<li>Converting dates to ISO 8601 format</li>
+</ul></li>
+<li>Standardizing NA strings
+<ul>
+<li>Turning variously-encoded missing values into proper NAs</li>
+</ul></li>
+<li>Dealing with garbled character encodings in source data</li>
+<li>Standardizing grantee identification
+<ul>
+<li>Correcting misspellings and errors</li>
+<li>Validating grantee IDs</li>
+</ul></li>
+<li>Removing sentinel values (e.g., totals rows)</li>
+<li>Correcting shifted columns (some grantees submitted data with columns in a different order than required)</li>
+<li>Joining relevant geocode data from geocode file</li>
+</ul>
+</section>
+<section id="step-3-deduplication" class="level2">
+<h2 class="anchored" data-anchor-id="step-3-deduplication">Step 3: Deduplication</h2>
+<p>In this step, we deduplicated each PHPDF independently.</p>
+<p>In the data, three patterns of duplication were discernible, so we deduplicated in three stages.</p>
+<section id="across-grantee" class="level3">
+<h3 class="anchored" data-anchor-id="across-grantee">Across-grantee</h3>
+<p>Identical payments could be reported by more than one grantee. For the purposes of this stage, ‘identical’ means having the same values across:</p>
+<ul>
+<li>address_line_1</li>
+<li>address_line_2</li>
+<li>address_line_3</li>
+<li>city_name</li>
+<li>state_code</li>
+<li>zip5</li>
+<li>zip4</li>
+<li>payee_type</li>
+<li>type_of_assistance</li>
+<li>amount_of_payment</li>
+<li>date_of_payment</li>
+<li>start_date</li>
+<li>end_date</li>
+<li>program</li>
+</ul>
+<p>How such payments were deduplicated depended on the cause of the duplication.</p>
+<p>If the duplication was due to grantees having overlapping geographies, all records made by the smallest jurisdiction were kept and others dropped (e.g., keep records from the City of Pittsburgh grantee, drop records duplicated in the Allegheny County grantee).</p>
+<p>If the duplication was due to misattribution of records to grantees with similar names, we dropped the records attributed to the wrong grantee, by inspecting the location of the payments (e.g., records attributed to Cleveland County, OK but were actually made by Cleveland, OH).</p>
+</section>
+<section id="across-file" class="level3">
+<h3 class="anchored" data-anchor-id="across-file">Across-file</h3>
+<p>In a given PHPDF, a grantee could submit data data to Treasury in multiple files. In some cases (very commonly in the ERA1 PHPDF), multiple files with near-identical contents were included from the same grantee. If identical records (using the same definition as above) were included in multiple files from the same grantee, we kept all records from the file with the largest number of records, and dropped duplicated records from all other files of the same grantee.</p>
+</section>
+<section id="within-file" class="level3">
+<h3 class="anchored" data-anchor-id="within-file">Within-file</h3>
+<p>Records could also be duplicated within a given file from a given grantee. Here, we define identical records more conservatively, since missing data across the identifying columns mean that multiple distinct payments could look the same if they are all missing critical elements like street address. Therefore, if any of the following variables were NA, we gave each NA value a temporary unique value to avoid using these missing values in identifying duplication.</p>
+<ul>
+<li>address_line_1</li>
+<li>payee_type</li>
+<li>type_of_assistance</li>
+<li>amount_of_payment</li>
+<li>date_of_payment</li>
+<li>start_date</li>
+</ul>
+<p>Within a given file from a given grantee, we keep the duplicate record with the lowest row number and drop all others.</p>
+</section>
+<section id="extent-of-duplication" class="level3">
+<h3 class="anchored" data-anchor-id="extent-of-duplication">Extent of duplication</h3>
+<p>We report the following figures to illustrate the extent of de/duplication in each PHPDF:</p>
+<ul>
+<li>ERA1 closeout: 5,621,334 rows dropped (42%)
+<ul>
+<li>The large percentage here is due to many grantees submitting duplicated files with the same contents to Treasury</li>
+</ul></li>
+<li>ERA2 Q4: 54,293 rows dropped (0.9%)</li>
+<li>ERA2 Q2: 12,261 rows dropped (0.3%)</li>
+<li>ERA2 Q1: 98,317 rows dropped (2%)</li>
+<li>ERA2 reachback: 74 rows dropped (~0%)</li>
+</ul>
+</section>
+</section>
+<section id="step-4-county-imputation" class="level2">
+<h2 class="anchored" data-anchor-id="step-4-county-imputation">Step 4: County imputation</h2>
+<p>In this step, we imputed county locations for payments that were missing a geocoded county. This step was necessary for 54,831 rows of payment data where the county geo-identifier was missing.</p>
+<p>For each program, we used two methods:</p>
+<section id="use-grantee-geography-for-countiessingle-county-cities" class="level3">
+<h3 class="anchored" data-anchor-id="use-grantee-geography-for-countiessingle-county-cities">Use grantee geography for counties/single-county cities</h3>
+<p>For county-level grantees and city-level grantees whose jurisdictions are included in only one geographic county, we imputed as the county of payment the geographic county of the grantee’s jurisdiction.</p>
+</section>
+<section id="use-city-zip-county-crosswalk-for-states" class="level3">
+<h3 class="anchored" data-anchor-id="use-city-zip-county-crosswalk-for-states">Use City + ZIP : county crosswalk for states</h3>
+<p>For state programs, this was a bit more complicated. We utilized a county-zip crosswalk from HUD (<a href="https://www.huduser.gov/portal/datasets/usps_crosswalk.html)" class="uri">https://www.huduser.gov/portal/datasets/usps_crosswalk.html)</a> (<code>ZIP_COUNTY_032023.xlsx</code>).</p>
+<p>First, we determined which zip codes in the crosswalk fell into just one county. Similarly to above, we then joined the single-county zips to the payment files, but this time, by zip code and state. We found that joining by city was too limiting, as the cities were described differently in each file (for example, the same address could be described as being in Las Vegas or North Las Vegas).</p>
+<p>The next, slightly more complicated step, was to join zip codes that fell within multiple counties. To be able to join one-to-one, we filtered the HUD county-zip crosswalk file to include counties where 95% of a zip code was within the county. After that, we could simply join by zip code and state.</p>
+</section>
+<section id="coalesce-county_geoid" class="level3">
+<h3 class="anchored" data-anchor-id="coalesce-county_geoid">Coalesce <code>county_geoid</code></h3>
+<p>We then coalesced from <code>geocode_county_geoid</code> and <code>imputed_county_geoid</code>. If a payment already had a value for <code>geocode_county_geoid</code>, then we kept that value. If not, it took on the value of <code>imputed_county_geoid</code>. At the beginning, 54,831 rows were missing <code>geocode_county_geoid</code>. After imputation, 25,604 rows were missing <code>county_geoid_coalesced</code>. These rows are subsequently dropped (in step 7). Therefore, we imputed values for counties for 29,227 payments. In all subsequent data processing steps, we use this coalesced county assignment.</p>
+</section>
+</section>
+<section id="step-5-variable-checks" class="level2">
+<h2 class="anchored" data-anchor-id="step-5-variable-checks">Step 5: Variable checks</h2>
+<p>In this step, we generated data validation metrics for each PHPDF.</p>
+<p>We first generated a series of variable-specific data quality checks, testing each row for:</p>
+<ul>
+<li>Whether the record was within the geographic jurisdiction of the grantee</li>
+<li>Whether the record was locatable to a specific county</li>
+<li>Whether the payment amount was recorded, and if so, whether it was negative, zero, or anomalously large
+<ul>
+<li>We defined ‘anomalously large’ as an amount exceeding the 99.9th percentile value of all records in ERA1 closeout and ERA2 Q4 ($73,541).</li>
+</ul></li>
+<li>Whether the date of payment was recorded, and if so, whether it was impossibly early (before January, 1, 2021 for ERA1, or before March 1, 2021 for ERA2) or late (after December 31, 2022 for ERA1, or after the end of the reporting quarter for ERA2)</li>
+<li>Whether the payee type (landlord, utility, tenant) was recorded</li>
+<li>Whether the assistance type (rent, utilities, other) was recorded</li>
+<li>Whether the record included a valid address</li>
+<li>The geocoding quality of the record, as given by HUD’s geocoding process</li>
+</ul>
+<p>For each aggregation type, we selected a subset of these variable quality tests to calculate grantee-level variable quality.</p>
+<ul>
+<li>For the county-month dataset, we employed the first 4 tests</li>
+<li>For the county-total dataset we imposed the first 3 tests</li>
+</ul>
+<p>For each grantee, we calculated the percentage of its records that met all applicable variable quality tests for the relevant aggregation scenario.</p>
+<p>For each grantee, we also calculated the percentage of its aggregate spending in the PHPDF compared to:</p>
+<ul>
+<li>Its total allocation for the applicable program (ERA1 or 2)</li>
+<li>The amount reported in Treasury’s publicly released aggregate summary reporting, which was itself compiled from aggregate reporting submitted by grantees to Treasury</li>
+<li>The amounts in the above bullet, but calculated at the state level (i.e., PHPDF spending added together for all grantees in a state, divided by aggregate reporting together for all grantees in a state)</li>
+</ul>
+</section>
+<section id="step-6-thresholding" class="level2">
+<h2 class="anchored" data-anchor-id="step-6-thresholding">Step 6: Thresholding</h2>
+<p>In this step, we specified acceptable data quality thresholds for all grantees.</p>
+<p>First, for each PHPDF, we calculated whether each grantee met the following thresholds:</p>
+<ul>
+<li>Variable quality: At least 79% of records had acceptable data across all variables needed for the applicable aggregation type (see Step 5 above for details on the tests)</li>
+<li>Spending completeness: The aggregate sum of the grantee’s payments (excluding negative payments) were:
+<ul>
+<li>Between 80% and 110% of its allocation (ERA1) or 50% and 110% of its allocation (ERA2); or</li>
+<li>If between 50% and 80% of its allocation (ERA1) or 25% and 50% of its allocation (ERA2), the reported spending was within 20% of the aggregate spending as reported to Treasury, either individually or for all grantees in the state together</li>
+</ul></li>
+</ul>
+<p>Second, we picked an ERA2 PHPDF source for each grantee, taking the most recent PHPDF for which a grantee passed (if any quarters passed) or the most recent PHPDF we had data for the grantee (if all quarters failed).</p>
+<p>Third, for any grantees which participated in either program (n = 405), we joined the diagnostic data for ERA1 and ERA2 to derive overall threshold checks. A grantee passed if it:</p>
+<ul>
+<li>Submitted data for all programs it participated in</li>
+<li>Passed the variable quality threshold for all programs it participated in</li>
+<li>Passed the spending completeness threshold for all programs it participated in</li>
+</ul>
+<p>Fourth, we applied a geographic threshold: if an otherwise passing grantee significantly overlapped in the area of its jurisdiction with a failing grantee, then it failed this threshold. This was done because, in geographic areas served by multiple grantees, missing or bad-quality data from one grantee may have impacted a significant percentage of ERA activity in that geographic area overall.</p>
+<p>We defined ‘significantly overlap’ as: more than 20% of the population of the geographic area served by the passing grantee being located in the overlap(s) with the geographic area(s) served by non-passing grantee(s). This was always taken to be the case for county and city grantees vis-à-vis their state grantees.</p>
+<p>Flowcharts illustrating these thresholding steps and the number of grantees dropped at each juncture are available below.</p>
+</section>
+<section id="step-7-pre-aggregation" class="level2">
+<h2 class="anchored" data-anchor-id="step-7-pre-aggregation">Step 7: Pre-aggregation</h2>
+<p>In this step, we prepared the final data to be aggregated.</p>
+<p>First, we bound the ERA1 data together with the ERA2 data. We selected the vintage of the ERA2 data by each grantee, as specified in Step 6.</p>
+<p>Second, we identified geographic counties with coverage issues due to incomplete grantee coverage. For example, if the Cook County, IL, grantee failed, any payments that the State of Illinois grantee made in Cook County should also drop. Note that this screening of counties at the <em>geographic</em> level was in addition to the screening of counties/cities at the <em>grantee</em> level in Step 6.</p>
+<p>Third, we filtered the joined data to only include the records to be included in the final aggregation. Namely, we only kept records where:</p>
+<ul>
+<li>The grantee passed all Step 6 thresholds</li>
+<li>The record was assigned to a county</li>
+<li>The county did not fall out due to the geographic screening described above</li>
+<li>The record passed all variable-level checks necessary for the applicable aggregation type</li>
+</ul>
+<p>Fourth, we constructed unique address IDs. To do this, we first extracted unit number information from the following fields, in order of availability:</p>
+<ul>
+<li>Geocoded address unit number</li>
+<li>Address line 2/3</li>
+<li>Address line 1</li>
+</ul>
+<p>We then assigned a unique ID to each unique concatenated value of:</p>
+<ul>
+<li>geocoded address (or if missing, the row number)</li>
+<li>unit number</li>
+<li>geocoded ZIP code</li>
+<li>geocoded state</li>
+</ul>
+<p>Data quality note: Because we are presuming that missing addresses are unique with respect to other missing addresses, the number of unique assisted households in counties with large address missingness rates may be inflated.</p>
+</section>
+<section id="step-8-aggregation" class="level2">
+<h2 class="anchored" data-anchor-id="step-8-aggregation">Step 8: Aggregation</h2>
+<p>In this step, we performed the final aggregation.</p>
+<p>Taking the data output from the previous step, we grouped the data by variables identifying each cell in the final output (e.g., county GEOID and payment month for the county + month aggregation), then calculated two quantities for each cell:</p>
+<ul>
+<li>The sum of payment amounts</li>
+<li>The number of unique assisted addresses</li>
+</ul>
+<p>We then suppressed cell values where the number of unique assisted addresses is less than 11, and the corresponding payment amount sum. The suppressed values are encoded with the value <code>-99999</code>.</p>
+
+
+</section>
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const isCodeAnnotation = (el) => {
+    for (const clz of el.classList) {
+      if (clz.startsWith('code-annotation-')) {                     
+        return true;
+      }
+    }
+    return false;
+  }
+  const onCopySuccess = function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    let tooltip;
+    if (window.bootstrap) {
+      button.setAttribute("data-bs-toggle", "tooltip");
+      button.setAttribute("data-bs-placement", "left");
+      button.setAttribute("data-bs-title", "Copied!");
+      tooltip = new bootstrap.Tooltip(button, 
+        { trigger: "manual", 
+          customClass: "code-copy-button-tooltip",
+          offset: [0, -8]});
+      tooltip.show();    
+    }
+    setTimeout(function() {
+      if (tooltip) {
+        tooltip.hide();
+        button.removeAttribute("data-bs-title");
+        button.removeAttribute("data-bs-toggle");
+        button.removeAttribute("data-bs-placement");
+      }
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  }
+  const getTextToCopy = function(trigger) {
+      const codeEl = trigger.previousElementSibling.cloneNode(true);
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+  }
+  const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+    text: getTextToCopy
+  });
+  clipboard.on('success', onCopySuccess);
+  if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+    const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+      text: getTextToCopy,
+      container: window.document.getElementById('quarto-embedded-source-code-modal')
+    });
+    clipboardModal.on('success', onCopySuccess);
+  }
+    var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+    var mailtoRegex = new RegExp(/^mailto:/);
+      var filterRegex = new RegExp('/' + window.location.host + '/');
+    var isInternal = (href) => {
+        return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+    }
+    // Inspect non-navigation links and adorn them if external
+ 	var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+    for (var i=0; i<links.length; i++) {
+      const link = links[i];
+      if (!isInternal(link.href)) {
+        // undo the damage that might have been done by quarto-nav.js in the case of
+        // links that we want to consider external
+        if (link.dataset.originalHref !== undefined) {
+          link.href = link.dataset.originalHref;
+        }
+      }
+    }
+  function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+    const config = {
+      allowHTML: true,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start',
+    };
+    if (contentFn) {
+      config.content = contentFn;
+    }
+    if (onTriggerFn) {
+      config.onTrigger = onTriggerFn;
+    }
+    if (onUntriggerFn) {
+      config.onUntrigger = onUntriggerFn;
+    }
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      if (note) {
+        return note.innerHTML;
+      } else {
+        return "";
+      }
+    });
+  }
+  const xrefs = window.document.querySelectorAll('a.quarto-xref');
+  const processXRef = (id, note) => {
+    // Strip column container classes
+    const stripColumnClz = (el) => {
+      el.classList.remove("page-full", "page-columns");
+      if (el.children) {
+        for (const child of el.children) {
+          stripColumnClz(child);
+        }
+      }
+    }
+    stripColumnClz(note)
+    if (id === null || id.startsWith('sec-')) {
+      // Special case sections, only their first couple elements
+      const container = document.createElement("div");
+      if (note.children && note.children.length > 2) {
+        container.appendChild(note.children[0].cloneNode(true));
+        for (let i = 1; i < note.children.length; i++) {
+          const child = note.children[i];
+          if (child.tagName === "P" && child.innerText === "") {
+            continue;
+          } else {
+            container.appendChild(child.cloneNode(true));
+            break;
+          }
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(container);
+        }
+        return container.innerHTML
+      } else {
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        return note.innerHTML;
+      }
+    } else {
+      // Remove any anchor links if they are present
+      const anchorLink = note.querySelector('a.anchorjs-link');
+      if (anchorLink) {
+        anchorLink.remove();
+      }
+      if (window.Quarto?.typesetMath) {
+        window.Quarto.typesetMath(note);
+      }
+      if (note.classList.contains("callout")) {
+        return note.outerHTML;
+      } else {
+        return note.innerHTML;
+      }
+    }
+  }
+  for (var i=0; i<xrefs.length; i++) {
+    const xref = xrefs[i];
+    tippyHover(xref, undefined, function(instance) {
+      instance.disable();
+      let url = xref.getAttribute('href');
+      let hash = undefined; 
+      if (url.startsWith('#')) {
+        hash = url;
+      } else {
+        try { hash = new URL(url).hash; } catch {}
+      }
+      if (hash) {
+        const id = hash.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note !== null) {
+          try {
+            const html = processXRef(id, note.cloneNode(true));
+            instance.setContent(html);
+          } finally {
+            instance.enable();
+            instance.show();
+          }
+        } else {
+          // See if we can fetch this
+          fetch(url.split('#')[0])
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.getElementById(id);
+            if (note !== null) {
+              const html = processXRef(id, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      } else {
+        // See if we can fetch a full url (with no hash to target)
+        // This is a special case and we should probably do some content thinning / targeting
+        fetch(url)
+        .then(res => res.text())
+        .then(html => {
+          const parser = new DOMParser();
+          const htmlDoc = parser.parseFromString(html, "text/html");
+          const note = htmlDoc.querySelector('main.content');
+          if (note !== null) {
+            // This should only happen for chapter cross references
+            // (since there is no id in the URL)
+            // remove the first header
+            if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+              note.children[0].remove();
+            }
+            const html = processXRef(null, note);
+            instance.setContent(html);
+          } 
+        }).finally(() => {
+          instance.enable();
+          instance.show();
+        });
+      }
+    }, function(instance) {
+    });
+  }
+      let selectedAnnoteEl;
+      const selectorForAnnotation = ( cell, annotation) => {
+        let cellAttr = 'data-code-cell="' + cell + '"';
+        let lineAttr = 'data-code-annotation="' +  annotation + '"';
+        const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+        return selector;
+      }
+      const selectCodeLines = (annoteEl) => {
+        const doc = window.document;
+        const targetCell = annoteEl.getAttribute("data-target-cell");
+        const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+        const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+        const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+        const lineIds = lines.map((line) => {
+          return targetCell + "-" + line;
+        })
+        let top = null;
+        let height = null;
+        let parent = null;
+        if (lineIds.length > 0) {
+            //compute the position of the single el (top and bottom and make a div)
+            const el = window.document.getElementById(lineIds[0]);
+            top = el.offsetTop;
+            height = el.offsetHeight;
+            parent = el.parentElement.parentElement;
+          if (lineIds.length > 1) {
+            const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+            const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+            height = bottom - top;
+          }
+          if (top !== null && height !== null && parent !== null) {
+            // cook up a div (if necessary) and position it 
+            let div = window.document.getElementById("code-annotation-line-highlight");
+            if (div === null) {
+              div = window.document.createElement("div");
+              div.setAttribute("id", "code-annotation-line-highlight");
+              div.style.position = 'absolute';
+              parent.appendChild(div);
+            }
+            div.style.top = top - 2 + "px";
+            div.style.height = height + 4 + "px";
+            div.style.left = 0;
+            let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+            if (gutterDiv === null) {
+              gutterDiv = window.document.createElement("div");
+              gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+              gutterDiv.style.position = 'absolute';
+              const codeCell = window.document.getElementById(targetCell);
+              const gutter = codeCell.querySelector('.code-annotation-gutter');
+              gutter.appendChild(gutterDiv);
+            }
+            gutterDiv.style.top = top - 2 + "px";
+            gutterDiv.style.height = height + 4 + "px";
+          }
+          selectedAnnoteEl = annoteEl;
+        }
+      };
+      const unselectCodeLines = () => {
+        const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+        elementsIds.forEach((elId) => {
+          const div = window.document.getElementById(elId);
+          if (div) {
+            div.remove();
+          }
+        });
+        selectedAnnoteEl = undefined;
+      };
+        // Handle positioning of the toggle
+    window.addEventListener(
+      "resize",
+      throttle(() => {
+        elRect = undefined;
+        if (selectedAnnoteEl) {
+          selectCodeLines(selectedAnnoteEl);
+        }
+      }, 10)
+    );
+    function throttle(fn, ms) {
+    let throttle = false;
+    let timer;
+      return (...args) => {
+        if(!throttle) { // first call gets through
+            fn.apply(this, args);
+            throttle = true;
+        } else { // all the others get throttled
+            if(timer) clearTimeout(timer); // cancel #2
+            timer = setTimeout(() => {
+              fn.apply(this, args);
+              timer = throttle = false;
+            }, ms);
+        }
+      };
+    }
+      // Attach click handler to the DT
+      const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+      for (const annoteDlNode of annoteDls) {
+        annoteDlNode.addEventListener('click', (event) => {
+          const clickedEl = event.target;
+          if (clickedEl !== selectedAnnoteEl) {
+            unselectCodeLines();
+            const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+            if (activeEl) {
+              activeEl.classList.remove('code-annotation-active');
+            }
+            selectCodeLines(clickedEl);
+            clickedEl.classList.add('code-annotation-active');
+          } else {
+            // Unselect the line
+            unselectCodeLines();
+            clickedEl.classList.remove('code-annotation-active');
+          }
+        });
+      }
+  const findCites = (el) => {
+    const parentEl = el.parentElement;
+    if (parentEl) {
+      const cites = parentEl.dataset.cites;
+      if (cites) {
+        return {
+          el,
+          cites: cites.split(' ')
+        };
+      } else {
+        return findCites(el.parentElement)
+      }
+    } else {
+      return undefined;
+    }
+  };
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const citeInfo = findCites(ref);
+    if (citeInfo) {
+      tippyHover(citeInfo.el, function() {
+        var popup = window.document.createElement('div');
+        citeInfo.cites.forEach(function(cite) {
+          var citeDiv = window.document.createElement('div');
+          citeDiv.classList.add('hanging-indent');
+          citeDiv.classList.add('csl-entry');
+          var biblioDiv = window.document.getElementById('ref-' + cite);
+          if (biblioDiv) {
+            citeDiv.innerHTML = biblioDiv.innerHTML;
+          }
+          popup.appendChild(citeDiv);
+        });
+        return popup.innerHTML;
+      });
+    }
+  }
+});
+</script>
+</div> <!-- /content -->
+
+
+
+
+</body></html>
