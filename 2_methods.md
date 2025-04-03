@@ -174,9 +174,9 @@ We defined 'significantly overlap' as: more than 20% of the population of the ge
 
 Flowcharts illustrating these thresholding steps and the number of grantees dropped at each juncture are available below.
 
-[!Flowchart illustrating number of grantees affected by each thresholding step, for the county-total aggregation](https://github.com/chihyunkim/quarto-website-test/blob/21b8b9ac5f0e107406f5938fa189608359f9e003/images/era_grantees_county_total_thresholding_flowchart_2025-03-18.svg)
+![Flowchart illustrating number of grantees affected by each thresholding step, for the county-total aggregation](images/era_grantees_county_total_thresholding_flowchart_2025-03-18.svg)
 
-[!Flowchart illustrating number of grantees affected by each thresholding step, for the county-month aggregation](https://github.com/chihyunkim/quarto-website-test/blob/21b8b9ac5f0e107406f5938fa189608359f9e003/images/era_grantees_county_month_thresholding_flowchart_2025-03-14.svg)
+![Flowchart illustrating number of grantees affected by each thresholding step, for the county-month aggregation](images/era_grantees_county_month_thresholding_flowchart_2025-03-14.svg)
 
 ## Step 7: Pre-aggregation
 
@@ -201,7 +201,7 @@ Fourth, we constructed unique address IDs. To do this, we first extracted unit n
 
 We then assigned a unique ID to each unique concatenated value of:
 
-- geocoded address (or if missing, the row number)
+- geocoded address (or if missing, the original address, or if that was missing, the record's row number)
 - unit number
 - geocoded ZIP code
 - geocoded state
