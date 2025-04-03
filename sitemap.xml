@@ -2,14 +2,14 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
     <loc>https://chihyunkim.github.io/quarto-website-test/1_aggregations.html</loc>
-    <lastmod>2025-04-03T17:31:49.042Z</lastmod>
+    <lastmod>2025-04-03T17:35:35.342Z</lastmod>
+  </url>
+  <url>
+    <loc>https://chihyunkim.github.io/quarto-website-test/index.html</loc>
+    <lastmod>2025-04-03T17:35:35.349Z</lastmod>
   </url>
   <url>
     <loc>https://chihyunkim.github.io/quarto-website-test/2_methods.html</loc>
-    <lastmod>2025-04-03T17:31:49.042Z</lastmod>
-  </url>
-  <url>
-    <loc>https://chihyunkim.github.io/quarto-website-test/0_about.html</loc>
-    <lastmod>2025-04-03T17:31:49.042Z</lastmod>
+    <lastmod>2025-04-03T17:35:35.342Z</lastmod>
   </url>
 </urlset>
