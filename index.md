@@ -1,5 +1,7 @@
 # County Emergency Rental Assistance Spending: An Introduction to the Project
 
+![](images/combined_logo.png)
+
 ## Background
 
 The Federal Emergency Rental Assistance (ERA) program was administered by the U.S. Department of the Treasury to alleviate the impact of the COVID-19 pandemic on renter households.

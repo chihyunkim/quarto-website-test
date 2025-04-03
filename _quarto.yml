@@ -3,16 +3,27 @@ project:
 
 website:
   title: "Emergency Rental Assistance County-level Aggregations"
+  page-navigation: true
+  back-to-top-navigation: true
+  page-footer: 
+    center: | 
+      Created by
+      ![](images/combined_logo.png)
+  repo-url: https://github.com/chihyunkim/quarto-website-test
+  repo-actions: [source, issue]
   navbar:
+    tools:
+      - icon: github
+        href: https://github.com/chihyunkim/quarto-website-test
     left:
       - text: "About"
         href: index.md
-      - 1_aggregations.md
-      - 2_methods.md
+      - aggregations.md
+      - methods.md
 
 format:
   html:
-    theme: cosmo
+    theme: sandstone
     css: styles.css
     toc: true
     toc-location: left

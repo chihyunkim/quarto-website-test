@@ -14,8 +14,8 @@ The ERA1 closeout PHPDHF as well as the ERA2 Q4 and reachback PHPDFs had geocodi
 
 The following number of rows were present in the payments file but not in the geocoded file: we geocoded these ourselves, using the Census geocoder.
 
-- ERA1 closeout: 77 rows
-- ERA2 Q4: 24,394 rows
+- ERA1 closeout: 77 rows (87.03% successfully geocoded)
+- ERA2 Q4: 24,394 rows (99.95% successfully geocoded)
 - ERA2 reachback: 0 rows (all rows already geocoded by HUD)
 
 The other ERA2 PHPDFs already had geocodes appended to the payment data in a single file. 
@@ -201,12 +201,12 @@ Fourth, we constructed unique address IDs. To do this, we first extracted unit n
 
 We then assigned a unique ID to each unique concatenated value of:
 
-- geocoded address (or if missing, the original address, or if that was missing, the record's row number)
+- geocoded address 
+	- if geocoded address was missing, we used the original address if available
+	- if there was no address at all, we used the record's row number
 - unit number
 - geocoded ZIP code
 - geocoded state
-
-Data quality note: Because we are presuming that missing addresses are unique with respect to other missing addresses, the number of unique assisted households in counties with large address missingness rates may be inflated.
 
 ## Step 8: Aggregation
 
