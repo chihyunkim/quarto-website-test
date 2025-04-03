@@ -6,7 +6,7 @@ website:
   navbar:
     left:
       - text: "About"
-        href: 0_about.md
+        href: index.md
       - 1_aggregations.md
       - 2_methods.md
 

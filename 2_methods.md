@@ -1,6 +1,6 @@
 # Methods
 
-Here, we detail our data cleaning and processing methodology. For more details on the raw data, please see [this section](0_about.md#data-sources) from the project's 'About' page.
+Here, we detail our data cleaning and processing methodology. For more details on the raw data, please see [this section](index.md#data-sources) from the project's 'About' page.
 
 ## Step 0: Grantee metadata
 
