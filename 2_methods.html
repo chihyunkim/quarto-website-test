@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
 
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.6.42">
+<meta name="generator" content="quarto-1.6.39">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
@@ -35,10 +35,10 @@ ul.task-list li input[type="checkbox"] {
 <script src="site_libs/quarto-html/tippy.umd.min.js"></script>
 <script src="site_libs/quarto-html/anchor.min.js"></script>
 <link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
-<link href="site_libs/quarto-html/quarto-syntax-highlighting-2f5df379a58b258e96c21c0638c20c03.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting-e26003cea8cd680ca0c55a263523d882.css" rel="stylesheet" id="quarto-text-highlighting-styles">
 <script src="site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="site_libs/bootstrap/bootstrap-8647a4a42273f773479d27c00df3f9ed.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<link href="site_libs/bootstrap/bootstrap-6bd9cfa162949bde0a231f530c97869d.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
   "location": "navbar",
   "copy-button": false,
@@ -164,8 +164,8 @@ ul.task-list li input[type="checkbox"] {
 <p>The ERA1 closeout PHPDHF as well as the ERA2 Q4 and reachback PHPDFs had geocoding outputs in a separate file. In this step, we compared the payment files and their corresponding geocodes, and verified that all rows join.</p>
 <p>The following number of rows were present in the payments file but not in the geocoded file: we geocoded these ourselves, using the Census geocoder.</p>
 <ul>
-<li>ERA1 closeout: 77 rows</li>
-<li>ERA2 Q4: 24,394 rows</li>
+<li>ERA1 closeout: 77 rows (87.03% successfully geocoded)</li>
+<li>ERA2 Q4: 24,394 rows (99.95% successfully geocoded)</li>
 <li>ERA2 reachback: 0 rows (all rows already geocoded by HUD)</li>
 </ul>
 <p>The other ERA2 PHPDFs already had geocodes appended to the payment data in a single file.</p>
@@ -361,12 +361,15 @@ ul.task-list li input[type="checkbox"] {
 </ul>
 <p>We then assigned a unique ID to each unique concatenated value of:</p>
 <ul>
-<li>geocoded address (or if missing, the original address, or if that was missing, the record’s row number)</li>
+<li>geocoded address
+<ul>
+<li>if geocoded address was missing, we used the original address if available</li>
+<li>if there was no address at all, we used the record’s row number</li>
+</ul></li>
 <li>unit number</li>
 <li>geocoded ZIP code</li>
 <li>geocoded state</li>
 </ul>
-<p>Data quality note: Because we are presuming that missing addresses are unique with respect to other missing addresses, the number of unique assisted households in counties with large address missingness rates may be inflated.</p>
 </section>
 <section id="step-8-aggregation" class="level2">
 <h2 class="anchored" data-anchor-id="step-8-aggregation">Step 8: Aggregation</h2>
@@ -382,7 +385,7 @@ ul.task-list li input[type="checkbox"] {
 </section>
 </section>
 
-</main> <!-- /main -->
+<a onclick="window.scrollTo(0, 0); return false;" role="button" id="quarto-back-to-top"><i class="bi bi-arrow-up"></i> Back to top</a></main> <!-- /main -->
 <script id="quarto-html-after-body" type="application/javascript">
 window.document.addEventListener("DOMContentLoaded", function (event) {
   const toggleBodyColorMode = (bsSheetEl) => {
@@ -473,7 +476,7 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
   }
     var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
     var mailtoRegex = new RegExp(/^mailto:/);
-      var filterRegex = new RegExp("https:\/\/chihyunkim\.github\.io\/quarto-website-test\/");
+      var filterRegex = new RegExp('/' + window.location.host + '/');
     var isInternal = (href) => {
         return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
     }
@@ -801,6 +804,19 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 });
 </script>
 </div> <!-- /content -->
+<footer class="footer">
+  <div class="nav-footer">
+    <div class="nav-footer-left">
+      &nbsp;
+    </div>   
+    <div class="nav-footer-center">
+<p>Created by <img src="images/combined_logo.png" class="img-fluid"></p>
+</div>
+    <div class="nav-footer-right">
+      &nbsp;
+    </div>
+  </div>
+</footer>
 
 
 
