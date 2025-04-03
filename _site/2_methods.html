@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 
-<title>about – Emergency Rental Assistance County-level Aggregations</title>
+<title>methods – Emergency Rental Assistance County-level Aggregations</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -89,7 +89,7 @@ ul.task-list li input[type="checkbox"] {
           <div class="collapse navbar-collapse" id="navbarCollapse">
             <ul class="navbar-nav navbar-nav-scroll me-auto">
   <li class="nav-item">
-    <a class="nav-link active" href="./0_about.html" aria-current="page"> 
+    <a class="nav-link" href="./0_about.html"> 
 <span class="menu-text">About</span></a>
   </li>  
   <li class="nav-item">
@@ -97,7 +97,7 @@ ul.task-list li input[type="checkbox"] {
 <span class="menu-text">Download data</span></a>
   </li>  
   <li class="nav-item">
-    <a class="nav-link" href="./2_methods.html"> 
+    <a class="nav-link active" href="./2_methods.html" aria-current="page"> 
 <span class="menu-text">Methods</span></a>
   </li>  
 </ul>
@@ -115,17 +115,28 @@ ul.task-list li input[type="checkbox"] {
     <h2 id="toc-title">On this page</h2>
    
   <ul>
-  <li><a href="#county-emergency-rental-assistance-spending-an-introduction-to-the-project" id="toc-county-emergency-rental-assistance-spending-an-introduction-to-the-project" class="nav-link active" data-scroll-target="#county-emergency-rental-assistance-spending-an-introduction-to-the-project">County Emergency Rental Assistance Spending: An Introduction to the Project</a>
+  <li><a href="#methods" id="toc-methods" class="nav-link active" data-scroll-target="#methods">Methods</a>
   <ul class="collapse">
-  <li><a href="#background" id="toc-background" class="nav-link" data-scroll-target="#background">Background</a>
+  <li><a href="#step-0-grantee-metadata" id="toc-step-0-grantee-metadata" class="nav-link" data-scroll-target="#step-0-grantee-metadata">Step 0: Grantee metadata</a></li>
+  <li><a href="#step-1-geocode" id="toc-step-1-geocode" class="nav-link" data-scroll-target="#step-1-geocode">Step 1: Geocode</a></li>
+  <li><a href="#step-2-initial-validation" id="toc-step-2-initial-validation" class="nav-link" data-scroll-target="#step-2-initial-validation">Step 2: Initial validation</a></li>
+  <li><a href="#step-3-deduplication" id="toc-step-3-deduplication" class="nav-link" data-scroll-target="#step-3-deduplication">Step 3: Deduplication</a>
   <ul class="collapse">
-  <li><a href="#data-citation" id="toc-data-citation" class="nav-link" data-scroll-target="#data-citation">Data Citation</a></li>
+  <li><a href="#across-grantee" id="toc-across-grantee" class="nav-link" data-scroll-target="#across-grantee">Across-grantee</a></li>
+  <li><a href="#across-file" id="toc-across-file" class="nav-link" data-scroll-target="#across-file">Across-file</a></li>
+  <li><a href="#within-file" id="toc-within-file" class="nav-link" data-scroll-target="#within-file">Within-file</a></li>
+  <li><a href="#extent-of-duplication" id="toc-extent-of-duplication" class="nav-link" data-scroll-target="#extent-of-duplication">Extent of duplication</a></li>
   </ul></li>
-  <li><a href="#data-sources" id="toc-data-sources" class="nav-link" data-scroll-target="#data-sources">Data sources</a>
+  <li><a href="#step-4-county-imputation" id="toc-step-4-county-imputation" class="nav-link" data-scroll-target="#step-4-county-imputation">Step 4: County imputation</a>
   <ul class="collapse">
-  <li><a href="#phpdfs" id="toc-phpdfs" class="nav-link" data-scroll-target="#phpdfs">PHPDFs</a></li>
-  <li><a href="#other-data" id="toc-other-data" class="nav-link" data-scroll-target="#other-data">Other data</a></li>
+  <li><a href="#use-grantee-geography-for-countiessingle-county-cities" id="toc-use-grantee-geography-for-countiessingle-county-cities" class="nav-link" data-scroll-target="#use-grantee-geography-for-countiessingle-county-cities">Use grantee geography for counties/single-county cities</a></li>
+  <li><a href="#use-city-zip-county-crosswalk-for-states" id="toc-use-city-zip-county-crosswalk-for-states" class="nav-link" data-scroll-target="#use-city-zip-county-crosswalk-for-states">Use City + ZIP : county crosswalk for states</a></li>
+  <li><a href="#coalesce-county_geoid" id="toc-coalesce-county_geoid" class="nav-link" data-scroll-target="#coalesce-county_geoid">Coalesce <code>county_geoid</code></a></li>
   </ul></li>
+  <li><a href="#step-5-variable-checks" id="toc-step-5-variable-checks" class="nav-link" data-scroll-target="#step-5-variable-checks">Step 5: Variable checks</a></li>
+  <li><a href="#step-6-thresholding" id="toc-step-6-thresholding" class="nav-link" data-scroll-target="#step-6-thresholding">Step 6: Thresholding</a></li>
+  <li><a href="#step-7-pre-aggregation" id="toc-step-7-pre-aggregation" class="nav-link" data-scroll-target="#step-7-pre-aggregation">Step 7: Pre-aggregation</a></li>
+  <li><a href="#step-8-aggregation" id="toc-step-8-aggregation" class="nav-link" data-scroll-target="#step-8-aggregation">Step 8: Aggregation</a></li>
   </ul></li>
   </ul>
 </nav>
@@ -140,45 +151,222 @@ ul.task-list li input[type="checkbox"] {
 
 
 
-<section id="county-emergency-rental-assistance-spending-an-introduction-to-the-project" class="level1">
-<h1>County Emergency Rental Assistance Spending: An Introduction to the Project</h1>
-<section id="background" class="level2">
-<h2 class="anchored" data-anchor-id="background">Background</h2>
-<p>The Federal Emergency Rental Assistance (ERA) program was administered by the U.S. Department of the Treasury to alleviate the impact of the COVID-19 pandemic on renter households.</p>
-<p>A total of $46.55 billion was distributed to state, territorial, county, city, and tribal governments through two programs: ERA1 ($25.55 billion authorized in December 2020 as part of the Consolidated Appropriations Act of 2021) and ERA2 ($21 billion included with the American Rescue Plan Act, passed March 2021). States, Washington, D.C., and territories were entitled to be ERA grantees. County and city governments were eligible to be ERA grantees if they met population requirements. Though Treasury set overall guidelines for the administration of the program, each grantee established its own mechanisms for the processing of applications and payments. Similarly, though Treasury published uniform data reporting requirements, each grantee had its own mechanisms for data collection and management.</p>
-<p>Over the course of the two programs, ERA funds could be used to address various housing needs for low-income renters. For the purposes of this project we focus on assistance paid by grantees to address rent (forward and in arrears), utility costs (forward and in arrears), and ‘other housing-related expenses’ as defined by Treasury (such as relocation expenses). Assistance could be paid either to tenants, landlords, utility companies, or providers of housing-related expenses. Further details on eligibility requirements and programmatic guidance for ERA can be found on <a href="https://home.treasury.gov/policy-issues/coronavirus/assistance-for-state-local-and-Tribal-governments/emergency-rental-assistance-program">Treasury’s web site</a> for ERA.</p>
-<p>This dataset details aggregate ERA spending at the county-month level and the county-total level. We attempted to establish broad coverage across the nation, aiming to share these data publicly with researchers interested in applying ERA payments data to their own research.</p>
-<p>This project was completed by a team comprising of the <a href="https://www.housinginitiative.org/">Housing Initiative at Penn</a>, the <a href="https://evictionlab.org/">Eviction Lab</a> (Princeton University), and <a href="https://www.urbandisplacement.org/">Urban Deplacement Project</a> (University of California, Berkeley), partially in fulfillment of an award from the U.S. Department of Housing and Urban Development. The project was also supported by grant R01NR020854 (MPI Eisenberg and Pollack). Hepburn’s involvement is supported by R01NR020748.</p>
-<p>The project team is solely responsible for the analytical decisions made in this project and the accuracy of aggregated files produced by this project. This work does not reflect the views of the U.S. Government or any other funding sources.</p>
-<section id="data-citation" class="level3">
-<h3 class="anchored" data-anchor-id="data-citation">Data Citation</h3>
-<p>The aggregate data produced by this project may be cited as:</p>
-<p>Kim, Chi-Hyun, Grace Hartley, Jacob Haas, Tim Thomas, Rebecca Yae, and Peter Hepburn. County Emergency Rental Assistance Spending. 2025. Accessed via TKTK.</p>
+<section id="methods" class="level1">
+<h1>Methods</h1>
+<p>Here, we detail our data cleaning and processing methodology. For more details on the raw data, please see <a href="./0_about.html#data-sources">this section</a> from the project’s ‘About’ page.</p>
+<section id="step-0-grantee-metadata" class="level2">
+<h2 class="anchored" data-anchor-id="step-0-grantee-metadata">Step 0: Grantee metadata</h2>
+<p>We began by preparing grantee metadata to be used in all subsequent steps. We took as our input a structured list of ERA1 and ERA2 grantees compiled by the National Low Income Housing Coalition (NLIHC).</p>
+<p>We also generated geographic crosswalks between grantees and Census geographies, as well as between city-level grantees and county-level grantees.</p>
 </section>
-</section>
-<section id="data-sources" class="level2">
-<h2 class="anchored" data-anchor-id="data-sources">Data sources</h2>
-<section id="phpdfs" class="level3">
-<h3 class="anchored" data-anchor-id="phpdfs">PHPDFs</h3>
-<p>The main sources of data for this project were confidential ERA payment data reported to the U.S. Department of the Treasury by ERA grantees. ERA grantees were required to submit periodic, detailed reports to Treasury on the payments they had made for assistance to households. (However, Tribal grantees were exempt from the reporting payment-level data, and their payments are not reflected in this dataset. There were 301 Tribal grantees, with $841,390,378 in total allocations.) The reports to Treasury were intended to offer payment-by-payment details on how ERA funds were distributed, including: amounts and dates of payments, addresses of the assisted property, type of payment (e.g., rent arrearage), and type of payee (e.g., landlord). These reports were compiled by Treasury into large files called Participant Household Payment Data Files (PHPDFs), separately for ERA1 and ERA2. The project team received these data between August 2023 and May 2024.</p>
-<p>For ERA1, Treasury compiled a closeout PHPDF based on the payments reported by grantees for the entirety of the ERA1 period of performance ending on December 29, 2022. This forms the basis of the ERA1 payments data used in this analysis.</p>
-<p>For ERA2, the program was still within its period of performance through 2023. Grantees were required to submit data on a quarterly basis, reporting cumulative payments made from the beginning of ERA2 up to the end of the reporting period. We generally use the PHPDF for the 2023 Q4 reporting period, but supplement with data reported in earlier quarters in 2023 for grantees with good data quality in those files but with bad-quality or missing data in the Q4 file.</p>
-<p>Whether the ultimate source of the assistance was ERA1 or ERA2 was largely immaterial for tenants and landlords, so our final aggregation does not distinguish between them. However, the two programs had slightly different administrative and reporting requirements, so for the purposes of our data processing pipeline, ERA1 and ERA2 are treated separately until just before the final aggregation.</p>
-<p>Addresses in PHPDFs were primarily geocoded by HUD, except for a small percentage of records which failed HUD’s geocoding. These records (77 records in ERA1 and 24,394 records in ERA2) were geocoded by the project team using the Census geocoder.</p>
-</section>
-<section id="other-data" class="level3">
-<h3 class="anchored" data-anchor-id="other-data">Other data</h3>
-<p>We also made use of ancillary files, including:</p>
+<section id="step-1-geocode" class="level2">
+<h2 class="anchored" data-anchor-id="step-1-geocode">Step 1: Geocode</h2>
+<p>The ERA1 closeout PHPDHF as well as the ERA2 Q4 and reachback PHPDFs had geocoding outputs in a separate file. In this step, we compared the payment files and their corresponding geocodes, and verified that all rows join.</p>
+<p>The following number of rows were present in the payments file but not in the geocoded file: we geocoded these ourselves, using the Census geocoder.</p>
 <ul>
-<li>A crosswalk of grantees for ERA1 and ERA2 compiled by the National Low Income Housing Coalition</li>
-<li>Treasury’s publicly released aggregate summary expenditure files (<a href="https://home.treasury.gov/system/files/136/Q1-2021-Q4-2022-ERA-Demographic-Data.xlsx">ERA1</a>, <a href="https://home.treasury.gov/system/files/136/ERA2-Cumulative-Program-Data-Q2-2021-Q3-2024.xlsx">ERA2</a>)</li>
-<li>Treasury’s updated list of allocation amounts (including any reallocations made through June 2024)</li>
-<li>HUD’s <a href="https://www.huduser.gov/portal/datasets/usps_crosswalk.html">ZIP code/county crosswalk</a></li>
-<li>A county/city population crosswalk generated from the <a href="https://mcdc.missouri.edu/applications/geocorr.html">Geocorr engine</a></li>
+<li>ERA1 closeout: 77 rows</li>
+<li>ERA2 Q4: 24,394 rows</li>
+<li>ERA2 reachback: 0 rows (all rows already geocoded by HUD)</li>
 </ul>
-
-
+<p>The other ERA2 PHPDFs already had geocodes appended to the payment data in a single file.</p>
 </section>
+<section id="step-2-initial-validation" class="level2">
+<h2 class="anchored" data-anchor-id="step-2-initial-validation">Step 2: Initial validation</h2>
+<p>In this step, we performed preliminary data-cleaning steps to normalize the formatting of the data. Each PHPDF (one for ERA1 and four for ERA2) was processed independently.</p>
+<ul>
+<li>Standardizing variable names
+<ul>
+<li>Ensuring compatibility between PHPDF files</li>
+</ul></li>
+<li>Standardizing variable types
+<ul>
+<li>Treating GEOIDs as appropriately left-padded strings</li>
+<li>Converting dates to ISO 8601 format</li>
+</ul></li>
+<li>Standardizing NA strings
+<ul>
+<li>Turning variously-encoded missing values into proper NAs</li>
+</ul></li>
+<li>Dealing with garbled character encodings in source data</li>
+<li>Standardizing grantee identification
+<ul>
+<li>Correcting misspellings and errors</li>
+<li>Validating grantee IDs</li>
+</ul></li>
+<li>Removing sentinel values (e.g., totals rows)</li>
+<li>Correcting shifted columns (some grantees submitted data with columns in a different order than required)</li>
+<li>Joining relevant geocode data from geocode file</li>
+</ul>
+</section>
+<section id="step-3-deduplication" class="level2">
+<h2 class="anchored" data-anchor-id="step-3-deduplication">Step 3: Deduplication</h2>
+<p>In this step, we deduplicated each PHPDF independently.</p>
+<p>In the data, three patterns of duplication were discernible, so we deduplicated in three stages.</p>
+<section id="across-grantee" class="level3">
+<h3 class="anchored" data-anchor-id="across-grantee">Across-grantee</h3>
+<p>Identical payments could be reported by more than one grantee. For the purposes of this stage, ‘identical’ means having the same values across:</p>
+<ul>
+<li>address_line_1</li>
+<li>address_line_2</li>
+<li>address_line_3</li>
+<li>city_name</li>
+<li>state_code</li>
+<li>zip5</li>
+<li>zip4</li>
+<li>payee_type</li>
+<li>type_of_assistance</li>
+<li>amount_of_payment</li>
+<li>date_of_payment</li>
+<li>start_date</li>
+<li>end_date</li>
+<li>program</li>
+</ul>
+<p>How such payments were deduplicated depended on the cause of the duplication.</p>
+<p>If the duplication was due to grantees having overlapping geographies, all records made by the smallest jurisdiction were kept and others dropped (e.g., keep records from the City of Pittsburgh grantee, drop records duplicated in the Allegheny County grantee).</p>
+<p>If the duplication was due to misattribution of records to grantees with similar names, we dropped the records attributed to the wrong grantee, by inspecting the location of the payments (e.g., records attributed to Cleveland County, OK but were actually made by Cleveland, OH).</p>
+</section>
+<section id="across-file" class="level3">
+<h3 class="anchored" data-anchor-id="across-file">Across-file</h3>
+<p>In a given PHPDF, a grantee could submit data data to Treasury in multiple files. In some cases (very commonly in the ERA1 PHPDF), multiple files with near-identical contents were included from the same grantee. If identical records (using the same definition as above) were included in multiple files from the same grantee, we kept all records from the file with the largest number of records, and dropped duplicated records from all other files of the same grantee.</p>
+</section>
+<section id="within-file" class="level3">
+<h3 class="anchored" data-anchor-id="within-file">Within-file</h3>
+<p>Records could also be duplicated within a given file from a given grantee. Here, we define identical records more conservatively, since missing data across the identifying columns mean that multiple distinct payments could look the same if they are all missing critical elements like street address. Therefore, if any of the following variables were NA, we gave each NA value a temporary unique value to avoid using these missing values in identifying duplication.</p>
+<ul>
+<li>address_line_1</li>
+<li>payee_type</li>
+<li>type_of_assistance</li>
+<li>amount_of_payment</li>
+<li>date_of_payment</li>
+<li>start_date</li>
+</ul>
+<p>Within a given file from a given grantee, we keep the duplicate record with the lowest row number and drop all others.</p>
+</section>
+<section id="extent-of-duplication" class="level3">
+<h3 class="anchored" data-anchor-id="extent-of-duplication">Extent of duplication</h3>
+<p>We report the following figures to illustrate the extent of de/duplication in each PHPDF:</p>
+<ul>
+<li>ERA1 closeout: 5,621,334 rows dropped (42%)
+<ul>
+<li>The large percentage here is due to many grantees submitting duplicated files with the same contents to Treasury</li>
+</ul></li>
+<li>ERA2 Q4: 54,293 rows dropped (0.9%)</li>
+<li>ERA2 Q2: 12,261 rows dropped (0.3%)</li>
+<li>ERA2 Q1: 98,317 rows dropped (2%)</li>
+<li>ERA2 reachback: 74 rows dropped (~0%)</li>
+</ul>
+</section>
+</section>
+<section id="step-4-county-imputation" class="level2">
+<h2 class="anchored" data-anchor-id="step-4-county-imputation">Step 4: County imputation</h2>
+<p>In this step, we imputed county locations for payments that were missing a geocoded county. This step was necessary for 54,831 rows of payment data where the county geo-identifier was missing.</p>
+<p>For each program, we used two methods:</p>
+<section id="use-grantee-geography-for-countiessingle-county-cities" class="level3">
+<h3 class="anchored" data-anchor-id="use-grantee-geography-for-countiessingle-county-cities">Use grantee geography for counties/single-county cities</h3>
+<p>For county-level grantees and city-level grantees whose jurisdictions are included in only one geographic county, we imputed as the county of payment the geographic county of the grantee’s jurisdiction.</p>
+</section>
+<section id="use-city-zip-county-crosswalk-for-states" class="level3">
+<h3 class="anchored" data-anchor-id="use-city-zip-county-crosswalk-for-states">Use City + ZIP : county crosswalk for states</h3>
+<p>For state programs, this was a bit more complicated. We utilized a county-zip crosswalk from HUD (<a href="https://www.huduser.gov/portal/datasets/usps_crosswalk.html)" class="uri">https://www.huduser.gov/portal/datasets/usps_crosswalk.html)</a> (<code>ZIP_COUNTY_032023.xlsx</code>).</p>
+<p>First, we determined which zip codes in the crosswalk fell into just one county. Similarly to above, we then joined the single-county zips to the payment files, but this time, by zip code and state. We found that joining by city was too limiting, as the cities were described differently in each file (for example, the same address could be described as being in Las Vegas or North Las Vegas).</p>
+<p>The next, slightly more complicated step, was to join zip codes that fell within multiple counties. To be able to join one-to-one, we filtered the HUD county-zip crosswalk file to include counties where 95% of a zip code was within the county. After that, we could simply join by zip code and state.</p>
+</section>
+<section id="coalesce-county_geoid" class="level3">
+<h3 class="anchored" data-anchor-id="coalesce-county_geoid">Coalesce <code>county_geoid</code></h3>
+<p>We then coalesced from <code>geocode_county_geoid</code> and <code>imputed_county_geoid</code>. If a payment already had a value for <code>geocode_county_geoid</code>, then we kept that value. If not, it took on the value of <code>imputed_county_geoid</code>. At the beginning, 54,831 rows were missing <code>geocode_county_geoid</code>. After imputation, 25,604 rows were missing <code>county_geoid_coalesced</code>. These rows are subsequently dropped (in step 7). Therefore, we imputed values for counties for 29,227 payments. In all subsequent data processing steps, we use this coalesced county assignment.</p>
+</section>
+</section>
+<section id="step-5-variable-checks" class="level2">
+<h2 class="anchored" data-anchor-id="step-5-variable-checks">Step 5: Variable checks</h2>
+<p>In this step, we generated data validation metrics for each PHPDF.</p>
+<p>We first generated a series of variable-specific data quality checks, testing each row for:</p>
+<ul>
+<li>Whether the record was within the geographic jurisdiction of the grantee</li>
+<li>Whether the record was locatable to a specific county</li>
+<li>Whether the payment amount was recorded, and if so, whether it was negative, zero, or anomalously large
+<ul>
+<li>We defined ‘anomalously large’ as an amount exceeding the 99.9th percentile value of all records in ERA1 closeout and ERA2 Q4 ($73,541).</li>
+</ul></li>
+<li>Whether the date of payment was recorded, and if so, whether it was impossibly early (before January, 1, 2021 for ERA1, or before March 1, 2021 for ERA2) or late (after December 31, 2022 for ERA1, or after the end of the reporting quarter for ERA2)</li>
+<li>Whether the payee type (landlord, utility, tenant) was recorded</li>
+<li>Whether the assistance type (rent, utilities, other) was recorded</li>
+<li>Whether the record included a valid address</li>
+<li>The geocoding quality of the record, as given by HUD’s geocoding process</li>
+</ul>
+<p>For each aggregation type, we selected a subset of these variable quality tests to calculate grantee-level variable quality.</p>
+<ul>
+<li>For the county-month dataset, we employed the first 4 tests</li>
+<li>For the county-total dataset we imposed the first 3 tests</li>
+</ul>
+<p>For each grantee, we calculated the percentage of its records that met all applicable variable quality tests for the relevant aggregation scenario.</p>
+<p>For each grantee, we also calculated the percentage of its aggregate spending in the PHPDF compared to:</p>
+<ul>
+<li>Its total allocation for the applicable program (ERA1 or 2)</li>
+<li>The amount reported in Treasury’s publicly released aggregate summary reporting, which was itself compiled from aggregate reporting submitted by grantees to Treasury</li>
+<li>The amounts in the above bullet, but calculated at the state level (i.e., PHPDF spending added together for all grantees in a state, divided by aggregate reporting together for all grantees in a state)</li>
+</ul>
+</section>
+<section id="step-6-thresholding" class="level2">
+<h2 class="anchored" data-anchor-id="step-6-thresholding">Step 6: Thresholding</h2>
+<p>In this step, we specified acceptable data quality thresholds for all grantees.</p>
+<p>First, for each PHPDF, we calculated whether each grantee met the following thresholds:</p>
+<ul>
+<li>Variable quality: At least 79% of records had acceptable data across all variables needed for the applicable aggregation type (see Step 5 above for details on the tests)</li>
+<li>Spending completeness: The aggregate sum of the grantee’s payments (excluding negative payments) were:
+<ul>
+<li>Between 80% and 110% of its allocation (ERA1) or 50% and 110% of its allocation (ERA2); or</li>
+<li>If between 50% and 80% of its allocation (ERA1) or 25% and 50% of its allocation (ERA2), the reported spending was within 20% of the aggregate spending as reported to Treasury, either individually or for all grantees in the state together</li>
+</ul></li>
+</ul>
+<p>Second, we picked an ERA2 PHPDF source for each grantee, taking the most recent PHPDF for which a grantee passed (if any quarters passed) or the most recent PHPDF we had data for the grantee (if all quarters failed).</p>
+<p>Third, for any grantees which participated in either program (n = 405), we joined the diagnostic data for ERA1 and ERA2 to derive overall threshold checks. A grantee passed if it:</p>
+<ul>
+<li>Submitted data for all programs it participated in</li>
+<li>Passed the variable quality threshold for all programs it participated in</li>
+<li>Passed the spending completeness threshold for all programs it participated in</li>
+</ul>
+<p>Fourth, we applied a geographic threshold: if an otherwise passing grantee significantly overlapped in the area of its jurisdiction with a failing grantee, then it failed this threshold. This was done because, in geographic areas served by multiple grantees, missing or bad-quality data from one grantee may have impacted a significant percentage of ERA activity in that geographic area overall.</p>
+<p>We defined ‘significantly overlap’ as: more than 20% of the population of the geographic area served by the passing grantee being located in the overlap(s) with the geographic area(s) served by non-passing grantee(s). This was always taken to be the case for county and city grantees vis-à-vis their state grantees.</p>
+<p>Flowcharts illustrating these thresholding steps and the number of grantees dropped at each juncture are available below.</p>
+</section>
+<section id="step-7-pre-aggregation" class="level2">
+<h2 class="anchored" data-anchor-id="step-7-pre-aggregation">Step 7: Pre-aggregation</h2>
+<p>In this step, we prepared the final data to be aggregated.</p>
+<p>First, we bound the ERA1 data together with the ERA2 data. We selected the vintage of the ERA2 data by each grantee, as specified in Step 6.</p>
+<p>Second, we identified geographic counties with coverage issues due to incomplete grantee coverage. For example, if the Cook County, IL, grantee failed, any payments that the State of Illinois grantee made in Cook County should also drop. Note that this screening of counties at the <em>geographic</em> level was in addition to the screening of counties/cities at the <em>grantee</em> level in Step 6.</p>
+<p>Third, we filtered the joined data to only include the records to be included in the final aggregation. Namely, we only kept records where:</p>
+<ul>
+<li>The grantee passed all Step 6 thresholds</li>
+<li>The record was assigned to a county</li>
+<li>The county did not fall out due to the geographic screening described above</li>
+<li>The record passed all variable-level checks necessary for the applicable aggregation type</li>
+</ul>
+<p>Fourth, we constructed unique address IDs. To do this, we first extracted unit number information from the following fields, in order of availability:</p>
+<ul>
+<li>Geocoded address unit number</li>
+<li>Address line 2/3</li>
+<li>Address line 1</li>
+</ul>
+<p>We then assigned a unique ID to each unique concatenated value of:</p>
+<ul>
+<li>geocoded address (or if missing, the row number)</li>
+<li>unit number</li>
+<li>geocoded ZIP code</li>
+<li>geocoded state</li>
+</ul>
+<p>Data quality note: Because we are presuming that missing addresses are unique with respect to other missing addresses, the number of unique assisted households in counties with large address missingness rates may be inflated.</p>
+</section>
+<section id="step-8-aggregation" class="level2">
+<h2 class="anchored" data-anchor-id="step-8-aggregation">Step 8: Aggregation</h2>
+<p>In this step, we performed the final aggregation.</p>
+<p>Taking the data output from the previous step, we grouped the data by variables identifying each cell in the final output (e.g., county GEOID and payment month for the county + month aggregation), then calculated two quantities for each cell:</p>
+<ul>
+<li>The sum of payment amounts</li>
+<li>The number of unique assisted addresses</li>
+</ul>
+<p>We then suppressed cell values where the number of unique assisted addresses is less than 11, and the corresponding payment amount sum. The suppressed values are encoded with the value <code>-99999</code>.</p>
+
+
 </section>
 </section>
 

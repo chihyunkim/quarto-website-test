@@ -1,4 +1,4 @@
-# Aggregations
+# Download data
 
 ## Files
 
@@ -48,3 +48,7 @@ We highlight the following data limitations:
 - Dollar amounts reported are nominal values and are not adjusted for inflation.
 
 For more information on which grantees and records are included in the aggregation, please refer to the data coverage descriptives provided here (for the county-total aggregation) and here (for the county-month aggregation).
+
+## Download
+
+The aggregation files may be found as CSV's at this project's public Github repository, here.
