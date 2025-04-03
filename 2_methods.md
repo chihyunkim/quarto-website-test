@@ -174,6 +174,10 @@ We defined 'significantly overlap' as: more than 20% of the population of the ge
 
 Flowcharts illustrating these thresholding steps and the number of grantees dropped at each juncture are available below.
 
+[!Flowchart illustrating number of grantees affected by each thresholding step, for the county-total aggregation](https://github.com/chihyunkim/quarto-website-test/blob/21b8b9ac5f0e107406f5938fa189608359f9e003/images/era_grantees_county_total_thresholding_flowchart_2025-03-18.svg)
+
+[!Flowchart illustrating number of grantees affected by each thresholding step, for the county-month aggregation](https://github.com/chihyunkim/quarto-website-test/blob/21b8b9ac5f0e107406f5938fa189608359f9e003/images/era_grantees_county_month_thresholding_flowchart_2025-03-14.svg)
+
 ## Step 7: Pre-aggregation
 
 In this step, we prepared the final data to be aggregated.
