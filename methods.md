@@ -110,7 +110,7 @@ For county-level grantees and city-level grantees whose jurisdictions are includ
 
 ### Use City + ZIP : county crosswalk for states
 
-For state programs, this was a bit more complicated. We utilized a county-zip crosswalk from HUD (<https://www.huduser.gov/portal/datasets/usps_crosswalk.html)> (`ZIP_COUNTY_032023.xlsx`).
+For state programs, this was a bit more complicated. We utilized a [ZIP code-county crosswalk](https://www.huduser.gov/portal/datasets/usps_crosswalk.html) from HUD.
 
 First, we determined which zip codes in the crosswalk fell into just one county. Similarly to above, we then joined the single-county zips to the payment files, but this time, by zip code and state. We found that joining by city was too limiting, as the cities were described differently in each file (for example, the same address could be described as being in Las Vegas or North Las Vegas).
 

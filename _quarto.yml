@@ -20,7 +20,7 @@ website:
         href: index.md
       - aggregations.md
       - methods.md
-      - data_coverage_descriptives.md
+      - data_coverage_descriptives.qmd
 
 format:
   html:

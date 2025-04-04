@@ -1,3 +1,0 @@
-# Data coverage descriptives
-
-Placeholder
