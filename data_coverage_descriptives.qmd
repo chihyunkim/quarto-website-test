@@ -2,7 +2,6 @@
 title: "Aggregation Descriptives"
 format:
   html:
-    theme: simplex
     toc: true
     toc-expand: false
 ---
@@ -330,15 +329,19 @@ thresholds <- county_total_selected_grantees %>%
 # get summaries for all vars total
 thresholds %>% 
   tabyl(threshold_data_coverage_label) %>% 
+mutate(percent = round(percent*100, 3)) %>% 
   datatable()
 thresholds %>% 
   tabyl(threshold_variable_goodness_label) %>% 
+mutate(percent = round(percent*100, 3)) %>% 
   datatable()
 thresholds %>% 
   tabyl(threshold_spending_completeness_label) %>% 
+mutate(percent = round(percent*100, 3)) %>% 
   datatable()
 thresholds %>% 
   tabyl(threshold_passing_with_complete_geography_label) %>% 
+mutate(percent = round(percent*100, 3)) %>% 
   datatable()
 
 ```
