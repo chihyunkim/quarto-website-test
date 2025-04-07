@@ -47,7 +47,7 @@ We highlight the following data limitations:
 - **Payments made by Tribal grantees are not included**, because they did not submit data for PHPDFs.
 - **Dollar amounts reported are nominal values** and are not adjusted for inflation.
 
-For more information on which grantees and records are included in the aggregation, please refer to the data coverage descriptives provided here (for the county-total aggregation) and here (for the county-month aggregation).
+For more information on which grantees and records are included in the aggregation, please refer to the data coverage descriptives provided [here](data_coverage_descriptives.qmd).
 
 ## Download
 
