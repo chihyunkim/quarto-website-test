@@ -23,9 +23,9 @@
   {
     "objectID": "data_coverage_descriptives.html",
     "href": "data_coverage_descriptives.html",
-    "title": "Data coverage descriptives",
+    "title": "Aggregation Descriptives",
     "section": "",
-    "text": "Quarto enables you to weave together content and executable code into a finished document. To learn more about Quarto see https://quarto.org."
+    "text": "County-Month DatasetCounty-Total Dataset\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nCounty-Month DatasetCounty-Total Dataset\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nCounty-Month DatasetCounty-Total Dataset\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nCounty-Month DatasetCounty-Total Dataset\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nCounty-Month DatasetCounty-Total Dataset\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nCounty-Month DatasetCounty-Total Dataset"
   },
   {
     "objectID": "data_coverage_descriptives.html#quarto",
@@ -145,5 +145,19 @@
     "title": "Methods",
     "section": "",
     "text": "In this step, we performed the final aggregation.\nTaking the data output from the previous step, we grouped the data by variables identifying each cell in the final output (e.g., county GEOID and payment month for the county + month aggregation), then calculated two quantities for each cell:\n\nThe sum of payment amounts\nThe number of unique assisted addresses\n\nWe then suppressed cell values where the number of unique assisted addresses is less than 11, and the corresponding payment amount sum. The suppressed values are encoded with the value -99999."
+  },
+  {
+    "objectID": "data_coverage_descriptives.html#grantee-level",
+    "href": "data_coverage_descriptives.html#grantee-level",
+    "title": "Aggregation Descriptives",
+    "section": "",
+    "text": "County-Month DatasetCounty-Total Dataset\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nCounty-Month DatasetCounty-Total Dataset\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nCounty-Month DatasetCounty-Total Dataset\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nCounty-Month DatasetCounty-Total Dataset\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nCounty-Month DatasetCounty-Total Dataset\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nCounty-Month DatasetCounty-Total Dataset"
+  },
+  {
+    "objectID": "data_coverage_descriptives.html#geographic-county-level",
+    "href": "data_coverage_descriptives.html#geographic-county-level",
+    "title": "Aggregation Descriptives",
+    "section": "Geographic county level",
+    "text": "Geographic county level\n\nCounties missing addresses\n\nCounty-Month Dataset\n\n\n\n\n\n\n\n\n\n\n\n\nTable of % missing addresses\n\nCounty-Month DatasetCounty-Total Dataset\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nMap of counties included in final outputs\n\n\n\n\n\n\n\n\nNumber and % of counties included in the final output, by state\n\nCounty-Month DatasetCounty-Total Dataset"
   }
 ]
