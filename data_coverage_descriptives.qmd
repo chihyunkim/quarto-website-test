@@ -169,7 +169,7 @@ county_total_pre_agg_joined <- county_total_pre_agg %>%
 
 ## Grantee level
 
-#### Number of grantees included, by type
+### Number of grantees included, by type
 
 ::: panel-tabset
 
@@ -198,7 +198,7 @@ county_total_pre_agg_joined %>%
 :::
 
 
-#### Number of grantees included, by state and type
+### Number of grantees included, by state and type
 
 ::: panel-tabset
 
@@ -226,7 +226,7 @@ county_total_pre_agg_joined %>%
 
 :::
 
-#### For each included grantee, percentage spent out of total allocation (according to treasury report)
+### For each included grantee, percentage spent out of total allocation (according to treasury report)
 
 ::: panel-tabset
 
@@ -282,7 +282,7 @@ mutate(pct_reported_spending = round(pct_reported_spending, 3)) %>%
 
 :::
 
-#### Summary of variable goodness for all grantees, including those dropped
+### Summary of variable goodness for all grantees, including those dropped
 
 ::: panel-tabset
 
@@ -299,15 +299,19 @@ thresholds <- county_month_selected_grantees %>%
 # get summaries for all vars monthly
 thresholds %>% 
   tabyl(threshold_data_coverage_label) %>% 
+mutate(percent = round(percent*100, 3)) %>% 
   datatable()
 thresholds %>% 
   tabyl(threshold_variable_goodness_label) %>% 
+mutate(percent = round(percent*100, 3)) %>% 
   datatable()
 thresholds %>% 
   tabyl(threshold_spending_completeness_label) %>% 
+mutate(percent = round(percent*100, 3)) %>% 
   datatable()
 thresholds %>% 
   tabyl(threshold_passing_with_complete_geography_label) %>% 
+mutate(percent = round(percent*100, 3)) %>% 
   datatable()
 
 
@@ -341,7 +345,7 @@ thresholds %>%
 
 :::
 
-#### Grantees that pass with goodness percentages less than 90% 
+### Grantees that pass with goodness percentages less than 90% 
 
 ::: panel-tabset
 
@@ -354,8 +358,8 @@ county_month_selected_grantees %>%
   select(grantee_state, grantee_name,  ok_percent_era1,
            ok_percent_era2, threshold_passing_with_complete_geography_label,
            grantee_type, geographic_level, grantee_id_era1, grantee_id_era2, grantee_id_combined) %>% 
-mutate(ok_percent_era1 = round(ok_percent_era1, 3),
-ok_percent_era2 = round(ok_percent_era2, 3)) %>% 
+mutate(ok_percent_era1 = round(ok_percent_era1*100, 3),
+ok_percent_era2 = round(ok_percent_era2*100, 3)) %>% 
   datatable()
 ```
 
@@ -368,14 +372,14 @@ county_total_selected_grantees %>%
   select(grantee_state, grantee_name,  ok_percent_era1,
            ok_percent_era2, threshold_passing_with_complete_geography_label,
            grantee_type, geographic_level, grantee_id_era1, grantee_id_era2, grantee_id_combined) %>% 
-mutate(ok_percent_era1 = round(ok_percent_era1, 3),
-ok_percent_era2 = round(ok_percent_era2, 3)) %>% 
+mutate(ok_percent_era1 = round(ok_percent_era1*100, 3),
+ok_percent_era2 = round(ok_percent_era2*100, 3)) %>% 
   datatable()
 ```
 
 :::
 
-#### Grantees that pass with allocation spent less than 80%  for ERA 1 OR less than 50% for ERA 2
+### Grantees that pass with allocation spent less than 80%  for ERA 1 OR less than 50% for ERA 2
 
 ::: panel-tabset
 
@@ -389,8 +393,8 @@ county_month_selected_grantees %>%
            percent_of_allocation_spent_era2, threshold_passing_with_complete_geography_label,
            grantee_type, geographic_level, grantee_id_era1, grantee_id_era2, grantee_id_combined) %>% 
   arrange(percent_of_allocation_spent_era1) %>% 
-mutate(percent_of_allocation_spent_era1 = round(percent_of_allocation_spent_era1, 3),
-percent_of_allocation_spent_era2 = round(percent_of_allocation_spent_era2, 3)) %>% 
+mutate(percent_of_allocation_spent_era1 = round(percent_of_allocation_spent_era1*100, 3),
+percent_of_allocation_spent_era2 = round(percent_of_allocation_spent_era2*100, 3)) %>% 
   datatable()
 ```
 
@@ -404,8 +408,8 @@ county_total_selected_grantees %>%
            percent_of_allocation_spent_era2, threshold_passing_with_complete_geography_label,
            grantee_type, geographic_level, grantee_id_era1, grantee_id_era2, grantee_id_combined) %>% 
   arrange(percent_of_allocation_spent_era1) %>% 
-mutate(percent_of_allocation_spent_era1 = round(percent_of_allocation_spent_era1, 3),
-percent_of_allocation_spent_era2 = round(percent_of_allocation_spent_era2, 3)) %>% 
+mutate(percent_of_allocation_spent_era1 = round(percent_of_allocation_spent_era1*100, 3),
+percent_of_allocation_spent_era2 = round(percent_of_allocation_spent_era2*100, 3)) %>% 
   datatable()
 ```
 
@@ -424,16 +428,17 @@ county_month_pre_agg %>%
   mutate(missing_address = street_address == as.character(row_number())) %>%
   group_by(county_geoid_coalesced, missing_address) %>% 
   summarize(n = n()) %>% 
-  mutate(percent = n / sum(n)) %>% 
+  mutate(percent = (n / sum(n))*100) %>% 
   filter(missing_address == TRUE) %>% 
   arrange(desc(percent)) %>% 
-mutate(percent = round(percent, 3)) %>% 
+mutate(percent = round(percent*100, 3)) %>% 
+select(-missing_address) %>% 
   datatable()
 ```
 
 :::
 
-#### Table of % missing addresses
+### Table of % missing addresses
 
 ::: panel-tabset
 
@@ -487,7 +492,7 @@ full_data <- full_join(counties_total, counties_monthly, by = "county_geoid_coal
 
 ```
 
-#### Map of counties included in final outputs
+### Map of counties included in final outputs
 
 ```{r, include = F, message = F}
 counties <- counties(cb = TRUE, year = 2020)
@@ -536,7 +541,7 @@ map
 ```
 
 
-#### Number and % of counties included in the final output, by state
+### Number and % of counties included in the final output, by state
 
 ::: panel-tabset
 
