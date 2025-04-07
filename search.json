@@ -93,23 +93,23 @@
   {
     "objectID": "data_coverage_descriptives.html",
     "href": "data_coverage_descriptives.html",
-    "title": "Data coverage descriptives",
+    "title": "Aggregation Descriptives",
     "section": "",
-    "text": "Quarto enables you to weave together content and executable code into a finished document. To learn more about Quarto see https://quarto.org."
+    "text": "County-Month DatasetCounty-Total Dataset\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nCounty-Month DatasetCounty-Total Dataset\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nCounty-Month DatasetCounty-Total Dataset\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nCounty-Month DatasetCounty-Total Dataset\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nCounty-Month DatasetCounty-Total Dataset\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nCounty-Month DatasetCounty-Total Dataset"
   },
   {
-    "objectID": "data_coverage_descriptives.html#quarto",
-    "href": "data_coverage_descriptives.html#quarto",
-    "title": "Data coverage descriptives",
+    "objectID": "data_coverage_descriptives.html#grantee-level",
+    "href": "data_coverage_descriptives.html#grantee-level",
+    "title": "Aggregation Descriptives",
     "section": "",
-    "text": "Quarto enables you to weave together content and executable code into a finished document. To learn more about Quarto see https://quarto.org."
+    "text": "County-Month DatasetCounty-Total Dataset\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nCounty-Month DatasetCounty-Total Dataset\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nCounty-Month DatasetCounty-Total Dataset\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nCounty-Month DatasetCounty-Total Dataset\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nCounty-Month DatasetCounty-Total Dataset\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nCounty-Month DatasetCounty-Total Dataset"
   },
   {
-    "objectID": "data_coverage_descriptives.html#running-code",
-    "href": "data_coverage_descriptives.html#running-code",
-    "title": "Data coverage descriptives",
-    "section": "Running Code",
-    "text": "Running Code\nWhen you click the Render button a document will be generated that includes both content and the output of embedded code. You can embed code like this:\n\n1 + 1\n\n[1] 2\n\n\nYou can add options to executable code like this\n\n\n[1] 4\n\n\nThe echo: false option disables the printing of code (only output is displayed)."
+    "objectID": "data_coverage_descriptives.html#geographic-county-level",
+    "href": "data_coverage_descriptives.html#geographic-county-level",
+    "title": "Aggregation Descriptives",
+    "section": "Geographic county level",
+    "text": "Geographic county level\n\nCounties missing addresses\n\nCounty-Month Dataset\n\n\n\n\n\n\n\n\n\n\n\n\nTable of % missing addresses\n\nCounty-Month DatasetCounty-Total Dataset\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nMap of counties included in final outputs\n\n\n\n\n\n\n\n\nNumber and % of counties included in the final output, by state\n\nCounty-Month DatasetCounty-Total Dataset"
   },
   {
     "objectID": "aggregations.html",
