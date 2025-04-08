@@ -248,11 +248,12 @@ county_month_pre_agg_joined %>%
   mutate(total_counties = n_distinct(COUNTYFP)) %>%
   summarize(
     total = n_distinct(county_geoid_coalesced),
-    pct_total_counties_covered = (total / total_counties) * 100
+    pct_total_counties_covered = (total / total_counties)
   ) %>%
 mutate(pct_total_counties_covered = round(pct_total_counties_covered, 3)) %>% 
   distinct() %>%
-  datatable()
+  datatable() %>% 
+  formatPercentage("pct_total_counties_covered", digits = 3)
 ```
 
 ## County-Total Dataset
@@ -266,11 +267,12 @@ county_total_pre_agg_joined %>%
   mutate(total_counties = n_distinct(COUNTYFP)) %>%
   summarize(
     total = n_distinct(county_geoid_coalesced),
-    pct_total_counties_covered = (total / total_counties) * 100
+    pct_total_counties_covered = (total / total_counties) 
   ) %>%
 mutate(pct_total_counties_covered = round(pct_total_counties_covered, 3)) %>% 
   distinct() %>%
-  datatable()
+  datatable() %>% 
+  formatPercentage("pct_total_counties_covered", digits = 3)
 ```
 
 :::
