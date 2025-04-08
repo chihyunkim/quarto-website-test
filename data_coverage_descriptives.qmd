@@ -322,7 +322,10 @@ county_total_pre_agg_joined %>%
   mutate(percent = round((n / sum(n)), 3)) %>% 
   filter(missing_address == TRUE) %>% 
   select(-missing_address) %>% 
-  rename(n_missing_addresses = n) %>% 
+  rename(n_missing_addresses = n) %>% left_join(counties %>% st_drop_geometry() %>% select(GEOID, NAMELSAD, STUSPS), 
+    by = join_by("county_geoid_coalesced" == "GEOID")) %>% 
+rename(county_name = NAMELSAD, state = STUSPS) %>%
+relocate(county_geoid_coalesced, county_name, state) %>% 
   arrange(desc(percent)) %>% 
   mutate(percent = round(percent, 3)) %>% 
   datatable() %>% 
