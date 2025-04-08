@@ -172,6 +172,20 @@ county_total_pre_agg_joined <- county_total_pre_agg %>%
 The map below shows which counties are a part of the county-total aggregation, the county-month aggregation, or both.
 
 ```{r, include = F, message = F}
+# combine data and prep
+counties_total <- county_total_aggregated %>% 
+  distinct(county_geoid_coalesced) %>% 
+  mutate(source = "Included only in County-Total Datasets")
+
+counties_monthly <- county_month_aggregated %>% distinct(county_geoid_coalesced) %>% 
+  mutate(source = "Included in County-Month and County-Total Datasets")
+
+full_data <- full_join(counties_total, counties_monthly, by = "county_geoid_coalesced") %>% 
+  mutate(source = coalesce(source.y, source.x))
+
+```
+
+```{r, include = F, message = F}
 counties <- counties(cb = TRUE, year = 2020)
 
 map_data <- left_join(
@@ -220,20 +234,6 @@ map
 ### Number and % of counties included in the final output, by state
 
 The table below presents county coverage by state. The tabs above the table can be toggled to view data for each dataset.
-
-```{r, include = F, message = F}
-# combine data and prep
-counties_total <- county_total_aggregated %>% 
-  distinct(county_geoid_coalesced) %>% 
-  mutate(source = "Included only in County-Total Datasets")
-
-counties_monthly <- county_month_aggregated %>% distinct(county_geoid_coalesced) %>% 
-  mutate(source = "Included in County-Month and County-Total Datasets")
-
-full_data <- full_join(counties_total, counties_monthly, by = "county_geoid_coalesced") %>% 
-  mutate(source = coalesce(source.y, source.x))
-
-```
 
 ::: panel-tabset
 
@@ -292,12 +292,16 @@ county_month_pre_agg_joined %>%
   mutate(missing_address = street_address == as.character(row_number())) %>%
   group_by(county_geoid_coalesced, missing_address) %>% 
   summarize(n = n()) %>% 
-  mutate(percent = round((n / sum(n))*100, 3)) %>% 
+  mutate(percent = round((n / sum(n)), 3)) %>% 
   filter(missing_address == TRUE) %>% 
   select(-missing_address) %>% 
   rename(n_missing_addresses = n) %>% 
   arrange(desc(percent)) %>% 
   mutate(percent = round(percent, 3)) %>% 
+  left_join(counties %>% st_drop_geometry() %>% select(GEOID, NAMELSAD, STUSPS), 
+    by = join_by("county_geoid_coalesced" == "GEOID")) %>% 
+rename(county_name = NAMELSAD, state = STUSPS) %>%
+relocate(county_geoid_coalesced, county_name, state) %>% 
   datatable() %>% 
   formatRound(c("n_missing_addresses"), digits = 0) %>% 
   formatPercentage("percent", digits = 3)
@@ -311,7 +315,7 @@ county_total_pre_agg_joined %>%
   mutate(missing_address = street_address == as.character(row_number())) %>%
   group_by(county_geoid_coalesced, missing_address) %>% 
   summarize(n = n()) %>% 
-  mutate(percent = round((n / sum(n))*100, 3)) %>% 
+  mutate(percent = round((n / sum(n)), 3)) %>% 
   filter(missing_address == TRUE) %>% 
   select(-missing_address) %>% 
   rename(n_missing_addresses = n) %>% 
@@ -341,7 +345,12 @@ county_month_pre_agg_joined %>%
   distinct(grantee_name, .keep_all = T) %>%
   count(grantee_geographic_level) %>%
   rename(number_of_grantees = n) %>% 
-  datatable()
+  mutate(total = sum(number_of_grantees),
+        pct_of_total_grantees = round(number_of_grantees/total, 3)) %>% 
+select(-total) %>% 
+  datatable() %>% 
+  formatPercentage("pct_of_total_grantees", 
+                   digits = 3)
 ```
 
 ## County-Total Dataset
@@ -352,7 +361,12 @@ county_total_pre_agg_joined %>%
   distinct(grantee_name, .keep_all = T) %>%
   count(grantee_geographic_level) %>%
   rename(number_of_grantees = n) %>% 
-  datatable()
+  mutate(total = sum(number_of_grantees),
+        pct_of_total_grantees = round(number_of_grantees/total, 3)) %>% 
+select(-total) %>% 
+  datatable() %>% 
+  formatPercentage("pct_of_total_grantees", 
+                   digits = 3)
 ```
 
 :::
@@ -369,7 +383,12 @@ county_month_pre_agg_joined %>%
   distinct(grantee_name, .keep_all = T) %>%
   count(grantee_state, grantee_geographic_level) %>%
   rename(number_of_grantees = n) %>% 
-  datatable()
+  mutate(total = sum(number_of_grantees),
+        pct_of_total_grantees = round(number_of_grantees/total, 3)) %>% 
+select(-total) %>% 
+  datatable() %>% 
+  formatPercentage("pct_of_total_grantees", 
+                   digits = 3)
 ```
 
 ## County-Total Dataset
@@ -380,7 +399,12 @@ county_total_pre_agg_joined %>%
   distinct(grantee_name, .keep_all = T) %>%
   count(grantee_state, grantee_geographic_level) %>%
   rename(number_of_grantees = n) %>% 
-  datatable()
+  mutate(total = sum(number_of_grantees),
+        pct_of_total_grantees = round(number_of_grantees/total, 3)) %>% 
+select(-total) %>% 
+  datatable() %>% 
+  formatPercentage("pct_of_total_grantees", 
+                   digits = 3)
 ```
 
 :::
