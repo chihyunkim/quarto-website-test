@@ -45,6 +45,10 @@ We also made use of ancillary files, including:
 - Treasury's updated list of allocation amounts (including any reallocations made through June 2024)
 - HUD's [ZIP code/county crosswalk](https://www.huduser.gov/portal/datasets/usps_crosswalk.html)
 - A county/city population crosswalk generated from the [Geocorr engine](https://mcdc.missouri.edu/applications/geocorr.html)
+
+## Contact
+
+For any questions regarding this project, please contact Chi-Hyun Kim at chkim@design.upenn.edu, or any of the three project organizations ([HIP](mailto:housinginitiative@design.upenn.edu), [Eviction Lab](mailto:info@evictionlab.org), [UDP](mailto:info@urbandisplacement.org)).
   
 
 
