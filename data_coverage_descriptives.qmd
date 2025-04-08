@@ -106,7 +106,8 @@ county_month_pre_agg_joined <- county_month_pre_agg %>%
     county_month_selected_grantees %>%
       select(-grantee_state, -grantee_name),
     by = c("grantee_id_combined")
-  )
+  ) %>% 
+  filter(threshold_passing_with_complete_geography)
 ```
 
 ```{r, include =F}
@@ -162,7 +163,8 @@ county_total_pre_agg_joined <- county_total_pre_agg %>%
     county_total_selected_grantees %>%
       select(-grantee_state, -grantee_name),
     by = c("grantee_id_combined")
-  )
+  ) %>% 
+  filter(threshold_passing_with_complete_geography)
 ```
 
 ## Geographic county level
@@ -347,11 +349,21 @@ county_month_pre_agg_joined %>%
   distinct(grantee_name, .keep_all = T) %>%
   count(grantee_geographic_level) %>%
   rename(number_of_grantees = n) %>% 
-  mutate(total = sum(number_of_grantees),
-        pct_of_total_grantees = round(number_of_grantees/total, 3)) %>% 
-select(-total) %>% 
+left_join(
+county_month_selected_grantees %>%
+    group_by(geographic_level) %>%
+    mutate(total = n()) %>%
+    filter(threshold_passing_with_complete_geography) %>% 
+    group_by(threshold_passing_with_complete_geography, geographic_level) %>%
+    summarise(
+        passing_total = n(),
+        total = first(total),
+        pct_of_total_passing = passing_total/total) %>% 
+select(-passing_total, -total, -threshold_passing_with_complete_geography), 
+by = join_by("grantee_geographic_level" == "geographic_level")) %>% 
+select(-threshold_passing_with_complete_geography) %>% 
   datatable() %>% 
-  formatPercentage("pct_of_total_grantees", 
+  formatPercentage("pct_of_total_passing", 
                    digits = 3)
 ```
 
@@ -363,11 +375,21 @@ county_total_pre_agg_joined %>%
   distinct(grantee_name, .keep_all = T) %>%
   count(grantee_geographic_level) %>%
   rename(number_of_grantees = n) %>% 
-  mutate(total = sum(number_of_grantees),
-        pct_of_total_grantees = round(number_of_grantees/total, 3)) %>% 
-select(-total) %>% 
+left_join(
+county_total_selected_grantees %>%
+    group_by(geographic_level) %>%
+    mutate(total = n()) %>%
+    filter(threshold_passing_with_complete_geography) %>% 
+    group_by(threshold_passing_with_complete_geography, geographic_level) %>%
+    summarise(
+        passing_total = n(),
+        total = first(total),
+        pct_of_total_passing = passing_total/total) %>% 
+select(-passing_total, -total, -threshold_passing_with_complete_geography), 
+by = join_by("grantee_geographic_level" == "geographic_level")) %>% 
+select(-threshold_passing_with_complete_geography) %>% 
   datatable() %>% 
-  formatPercentage("pct_of_total_grantees", 
+  formatPercentage("pct_of_total_passing", 
                    digits = 3)
 ```
 
