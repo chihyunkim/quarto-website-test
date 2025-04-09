@@ -56,7 +56,7 @@ county_month_selected_grantees <- read_csv(
     "1_intermediates",
     "phpdfs",
     "6_thresholding",
-    "county_month_selected_grantees_2025-03-20.csv",
+    "county_month_selected_grantees_2025-03-21.csv",
     sep = "/"
   )
 )
@@ -106,8 +106,7 @@ county_month_pre_agg_joined <- county_month_pre_agg %>%
     county_month_selected_grantees %>%
       select(-grantee_state, -grantee_name),
     by = c("grantee_id_combined")
-  ) %>% 
-  filter(threshold_passing_with_complete_geography)
+  ) 
 ```
 
 ```{r, include =F}
@@ -144,7 +143,7 @@ county_total_selected_grantees <- read_csv(
 )
 ```
 
-```{r, include =F}
+```{r, include = F}
 #Read pre aggregated data total
 county_total_pre_agg <- read_parquet(
   str_c(data_path, "1_intermediates",
@@ -156,15 +155,14 @@ county_total_pre_agg <- read_parquet(
 )
 ```
 
-```{r, include =F}
+```{r, include = F}
 # join to selected grantees to get the thresholding vars total
 county_total_pre_agg_joined <- county_total_pre_agg %>%
   left_join(
     county_total_selected_grantees %>%
       select(-grantee_state, -grantee_name),
     by = c("grantee_id_combined")
-  ) %>% 
-  filter(threshold_passing_with_complete_geography)
+  ) 
 ```
 
 ## Geographic county level
@@ -244,7 +242,7 @@ The table below presents county coverage by state. The tabs above the table can 
 ```{r, echo = FALSE, message = FALSE, warning = FALSE}
 county_month_pre_agg_joined %>%
   distinct(county_geoid_coalesced, .keep_all = TRUE) %>%
-  left_join(counties, by = join_by("geocode_std_st" == "STUSPS")) %>%
+  left_join(counties, by = join_by("grantee_state" == "STATE_NAME")) %>%
   distinct() %>%
   group_by(grantee_state) %>%
   mutate(total_counties = n_distinct(COUNTYFP)) %>%
@@ -263,7 +261,7 @@ mutate(pct_total_counties_covered = round(pct_total_counties_covered, 3)) %>%
 ```{r, echo = FALSE, message = FALSE, warning = FALSE}
 county_total_pre_agg_joined %>%
   distinct(county_geoid_coalesced, .keep_all = TRUE) %>%
-  left_join(counties, by = join_by("geocode_std_st" == "STUSPS")) %>%
+ left_join(counties, by = join_by("grantee_state" == "STATE_NAME")) %>%
   distinct() %>%
   group_by(grantee_state) %>%
   mutate(total_counties = n_distinct(COUNTYFP)) %>%
@@ -347,26 +345,23 @@ The tables below present information relating to data coverage and quality. Thes
 ## County-Month Dataset
 
 ```{r, echo = FALSE, message = FALSE, warning = FALSE}
-# total number of grantees, by grantee_geographic_level monthly
-county_month_pre_agg_joined %>%
-  distinct(grantee_name, .keep_all = T) %>%
-  count(grantee_geographic_level) %>%
-  rename(number_of_grantees = n) %>% 
-left_join(
+# total number of passing grantees, by grantee_geographic_level monthly
 county_month_selected_grantees %>%
     group_by(geographic_level) %>%
     mutate(total = n()) %>%
-    filter(threshold_passing_with_complete_geography) %>% 
+    filter(threshold_passing_with_complete_geography == TRUE) %>% 
     group_by(threshold_passing_with_complete_geography, geographic_level) %>%
     summarise(
         passing_total = n(),
         total = first(total),
         pct_of_total_passing = passing_total/total) %>% 
-select(-passing_total, -total, -threshold_passing_with_complete_geography), 
-by = join_by("grantee_geographic_level" == "geographic_level")) %>% 
-select(-threshold_passing_with_complete_geography) %>% 
+ungroup() %>% 
+select(geographic_level, passing_total, pct_of_total_passing) %>% 
+rename(n_passing = passing_total,
+pct_grantees_passing = pct_of_total_passing
+) %>% 
   datatable() %>% 
-  formatPercentage("pct_of_total_passing", 
+  formatPercentage("pct_grantees_passing", 
                    digits = 3)
 ```
 
@@ -374,25 +369,22 @@ select(-threshold_passing_with_complete_geography) %>%
 
 ```{r, echo = FALSE, message = FALSE, warning = FALSE}
 # total number of grantees, by grantee_geographic_level total
-county_total_pre_agg_joined %>%
-  distinct(grantee_name, .keep_all = T) %>%
-  count(grantee_geographic_level) %>%
-  rename(number_of_grantees = n) %>% 
-left_join(
 county_total_selected_grantees %>%
     group_by(geographic_level) %>%
     mutate(total = n()) %>%
-    filter(threshold_passing_with_complete_geography) %>% 
+    filter(threshold_passing_with_complete_geography == TRUE) %>% 
     group_by(threshold_passing_with_complete_geography, geographic_level) %>%
     summarise(
         passing_total = n(),
         total = first(total),
         pct_of_total_passing = passing_total/total) %>% 
-select(-passing_total, -total, -threshold_passing_with_complete_geography), 
-by = join_by("grantee_geographic_level" == "geographic_level")) %>% 
-select(-threshold_passing_with_complete_geography) %>% 
+ungroup() %>% 
+select(geographic_level, passing_total, pct_of_total_passing) %>% 
+rename(n_passing = passing_total,
+pct_grantees_passing = pct_of_total_passing
+) %>% 
   datatable() %>% 
-  formatPercentage("pct_of_total_passing", 
+  formatPercentage("pct_grantees_passing", 
                    digits = 3)
 ```
 
@@ -406,15 +398,22 @@ select(-threshold_passing_with_complete_geography) %>%
 
 ```{r, echo = FALSE, message = FALSE, warning = FALSE}
 # number of grantees in each state, by grantee_geographic_level monthly
-county_month_pre_agg_joined %>%
-  distinct(grantee_name, .keep_all = T) %>%
-  count(grantee_state, grantee_geographic_level) %>%
-  rename(number_of_grantees = n) %>% 
-  mutate(total = sum(number_of_grantees),
-        pct_of_total_grantees = round(number_of_grantees/total, 3)) %>% 
-select(-total) %>% 
+county_month_selected_grantees %>%
+    group_by(geographic_level, grantee_state) %>%
+    mutate(total = n()) %>%
+    filter(threshold_passing_with_complete_geography == TRUE) %>% 
+    group_by(threshold_passing_with_complete_geography, geographic_level, grantee_state) %>%
+    summarise(
+        passing_total = n(),
+        total = first(total),
+        pct_of_total_passing = passing_total/total) %>% 
+ungroup() %>% 
+select(geographic_level,grantee_state, passing_total, pct_of_total_passing) %>% 
+rename(n_passing = passing_total,
+pct_grantees_passing = pct_of_total_passing
+) %>% 
   datatable() %>% 
-  formatPercentage("pct_of_total_grantees", 
+  formatPercentage("pct_grantees_passing", 
                    digits = 3)
 ```
 
@@ -422,15 +421,22 @@ select(-total) %>%
 
 ```{r, echo = FALSE, message = FALSE, warning = FALSE}
 # number of grantees in each state, by grantee_geographic_level total
-county_total_pre_agg_joined %>%
-  distinct(grantee_name, .keep_all = T) %>%
-  count(grantee_state, grantee_geographic_level) %>%
-  rename(number_of_grantees = n) %>% 
-  mutate(total = sum(number_of_grantees),
-        pct_of_total_grantees = round(number_of_grantees/total, 3)) %>% 
-select(-total) %>% 
+county_total_selected_grantees %>%
+    group_by(geographic_level, grantee_state) %>%
+    mutate(total = n()) %>%
+    filter(threshold_passing_with_complete_geography == TRUE) %>% 
+    group_by(threshold_passing_with_complete_geography, geographic_level, grantee_state) %>%
+    summarise(
+        passing_total = n(),
+        total = first(total),
+        pct_of_total_passing = passing_total/total) %>% 
+ungroup() %>% 
+select(geographic_level,grantee_state, passing_total, pct_of_total_passing) %>% 
+rename(n_passing = passing_total,
+pct_grantees_passing = pct_of_total_passing
+) %>% 
   datatable() %>% 
-  formatPercentage("pct_of_total_grantees", 
+  formatPercentage("pct_grantees_passing", 
                    digits = 3)
 ```
 
