@@ -56,7 +56,7 @@ county_month_selected_grantees <- read_csv(
     "1_intermediates",
     "phpdfs",
     "6_thresholding",
-    "county_month_selected_grantees_2025-03-20.csv",
+    "county_month_selected_grantees_2025-03-21.csv",
     sep = "/"
   )
 )
@@ -218,6 +218,14 @@ The table below presents county coverage by state. The tabs above the table can 
 ## County-Month Dataset
 
 ```{r, echo = FALSE, message = FALSE, warning = FALSE}
+
+counties %>% 
+  
+  
+  
+  county_month_aggregated
+  
+  
 
 county_month_pre_agg_joined %>%
   distinct(county_geoid_coalesced, .keep_all = TRUE) %>%
