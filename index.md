@@ -2,7 +2,7 @@
 
 ![](images/combined_logo.png)
 
-:construction: **This website is under construction and is intended for internal review only!** :construction:
+## **This website is under construction and is intended for internal review only!**
 
 ## Background
 
