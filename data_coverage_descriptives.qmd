@@ -177,6 +177,10 @@ map <- leaflet() %>%
   ) %>%
   leaflet::setView(lng = -100, lat = 54.5, zoom = 3)
 
+```
+
+```{r, echo = F, message = F}
+
 map
 
 ```
