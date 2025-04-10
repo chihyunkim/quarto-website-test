@@ -1,145 +1,117 @@
 ---
-title: "Aggregation Descriptives"
+title: "Data coverage descriptives"
 format:
   html:
     toc: true
-    toc-expand: false
 ---
 
 
-```{r setup, include = F}
+```{r Options, include = F}
+
 knitr::opts_chunk$set(echo = TRUE)
 
 ```
 
-```{r, include = F}
-options(scipen = 999)
-options(tigris_use_cache = TRUE)
-```
+```{r Setup, include = F, message = F}
 
-```{r, include = F, message = F}
 library(tidyverse)
 library(arrow)
 library(leaflet)
 library(tigris)
-library(tictoc)
 library(sf)
 library(DT)
 library(janitor)
+library(this.path)
+library(snakecase)
+
+options(scipen = 999)
+options(tigris_use_cache = TRUE)
+
+# Path to data directory
+data_path <- str_c(this.dir(), "data", sep = "/")
+
 ```
 
-```{r, include =F}
-# Locally specific part of data folder path already stored in Renviron file
-data_path <- str_c(Sys.getenv("LOCAL_PATH"),
-  "era-county-level-dataset-data",
-  sep = "/"
-)
-```
+```{r Read data, include = F}
 
-```{r, include = F}
-# Read aggregated data monthly
+# Aggregated data 
+
 county_month_aggregated <- read_csv(
   str_c(
-    Sys.getenv("LOCAL_PATH"),
-    "era-county-level-dataset",
-    "outputs",
-    "aggregation_outputs",
+    data_path,
+    "aggregated_data",
     "county_month_aggregated_2025-04-02.csv",
     sep = "/"
   )
 )
-```
 
-```{r, include =F}
-county_month_selected_grantees <- read_csv(
-  str_c(data_path,
-    "1_intermediates",
-    "phpdfs",
-    "6_thresholding",
-    "county_month_selected_grantees_2025-03-21.csv",
-    sep = "/"
-  )
-)
-```
-
-```{r, include =F}
-# Read pre aggregated data monthly
-county_month_pre_agg <- read_parquet(
-  str_c(data_path, "1_intermediates",
-    "phpdfs",
-    "7_pre_aggregation",
-    "county_month_data_ready_for_aggregation_2025-04-02.parquet",
-    sep = "/"
-  )
-)
-```
-
-```{r, include =F}
-# join to selected grantees to get the thresholding vars
-county_month_pre_agg_joined <- county_month_pre_agg %>%
-  left_join(
-    county_month_selected_grantees %>%
-      select(-grantee_state, -grantee_name),
-    by = c("grantee_id_combined")
-  ) %>% 
-  filter(threshold_passing_with_complete_geography)
-```
-
-```{r, include =F}
-# get counties for whole country with states
-states <- states(year = 2020) %>% st_drop_geometry()
-counties <- counties(year = 2020) %>%
-  st_drop_geometry() %>%
-  left_join(states, by = "STATEFP")
-```
-
-```{r, include = F}
-# Read aggregated data
 county_total_aggregated <- read_csv(
   str_c(
-    Sys.getenv("LOCAL_PATH"),
-    "era-county-level-dataset",
-    "outputs",
-    "aggregation_outputs",
+    data_path,
+    "aggregated_data",
     "county_total_aggregated_2025-04-02.csv",
     sep = "/"
   )
 )
-```
 
-```{r, include =F}
-county_total_selected_grantees <- read_csv(
+# Thresholding data
+
+county_month_thresholds <- read_csv(
   str_c(data_path,
-    "1_intermediates",
-    "phpdfs",
-    "6_thresholding",
-    "county_total_selected_grantees_2025-03-21.csv",
-    sep = "/"
+        "coverage_data",
+        "county_month_selected_grantees_2025-03-21.csv",
+        sep = "/"
   )
 )
-```
 
-```{r, include =F}
-#Read pre aggregated data total
-county_total_pre_agg <- read_parquet(
-  str_c(data_path, "1_intermediates",
-    "phpdfs",
-    "7_pre_aggregation",
-    "county_total_data_ready_for_aggregation_2025-04-02.parquet",
-    sep = "/"
+county_total_thresholds <- read_csv(
+  str_c(data_path,
+        "coverage_data",
+        "county_total_selected_grantees_2025-03-21.csv",
+        sep = "/"
   )
 )
+
+# Missing address data
+
+county_month_missing_address <- read_csv(
+  str_c(data_path,
+        "coverage_data",
+        "county_month_missing_address_summary_2025-04-02.csv",
+        sep = "/"
+  )
+)
+
+county_total_missing_address <- read_csv(
+  str_c(data_path,
+        "coverage_data",
+        "county_total_missing_address_summary_2025-04-02.csv",
+        sep = "/"
+  )
+)
+
 ```
 
-```{r, include =F}
-# join to selected grantees to get the thresholding vars total
-county_total_pre_agg_joined <- county_total_pre_agg %>%
-  left_join(
-    county_total_selected_grantees %>%
-      select(-grantee_state, -grantee_name),
-    by = c("grantee_id_combined")
-  ) %>% 
-  filter(threshold_passing_with_complete_geography)
+```{r Counties list, include =F}
+
+# Get counties for whole country with states
+
+states <- states(year = 2020, , cb = TRUE) %>% 
+  st_drop_geometry()
+
+counties_raw <- counties(year = 2020, cb = TRUE) 
+
+counties <- counties_raw %>%
+  left_join(states %>% 
+              select(STATEFP, state = NAME), 
+            by = "STATEFP") %>% 
+  # Exclude territories
+  filter(!state %in% c("Puerto Rico", 
+                       "United States Virgin Islands", 
+                       "Guam", 
+                       "Commonwealth of the Northern Mariana Islands", 
+                       "American Samoa"))
+
 ```
 
 ## Geographic county level
@@ -149,38 +121,39 @@ county_total_pre_agg_joined <- county_total_pre_agg %>%
 The map below shows which counties are a part of the county-total aggregation, the county-month aggregation, or both.
 
 ```{r, include = F, message = F}
-# combine data and prep
-counties_total <- county_total_aggregated %>% 
+
+# Combine data and prep
+counties_included_total <- county_total_aggregated %>% 
   distinct(county_geoid_coalesced) %>% 
   mutate(source = "Included only in County-Total Dataset")
 
-counties_monthly <- county_month_aggregated %>% 
+counties_included_monthly <- county_month_aggregated %>% 
   distinct(county_geoid_coalesced) %>% 
   mutate(source = "Included in County-Month and County-Total Datasets")
 
-full_data <- full_join(counties_total, counties_monthly, by = "county_geoid_coalesced") %>% 
+counties_included_combined <- 
+  full_join(counties_included_total, counties_included_monthly, by = "county_geoid_coalesced") %>% 
   mutate(source = coalesce(source.y, source.x))
 
 ```
 
 ```{r, include = F, message = F}
-counties <- counties(cb = TRUE, year = 2020)
 
-map_data <- left_join(
-  counties,
-  full_data,
-  by = join_by("GEOID" == "county_geoid_coalesced")
-) %>%
-  mutate(source = ifelse(is.na(source), "No data", source)) %>% 
+map_data <- counties %>% 
+  left_join(counties_included_combined, 
+            by = join_by("GEOID" == "county_geoid_coalesced")) %>%
+  mutate(source = replace_na(source, "No data")) %>% 
   st_transform(map_data, crs = 4326)
 
 pal <- colorFactor(palette = c("#b69ee2", "#7ebcef", "lightgray"), domain = map_data$source)
 
-labels <- sprintf(
-  "<strong>%s</strong><br/> GEOID %s",
-  map_data$NAMELSAD,
-  map_data$GEOID
-) %>%
+labels <- 
+  sprintf(
+    "<strong>%s</strong><br/> GEOID %s<br/>%s",
+    map_data$NAMELSAD,
+    map_data$GEOID,
+    map_data$source
+  ) %>%
   map(htmltools::HTML)
 
 
@@ -199,14 +172,13 @@ map <- leaflet() %>%
     pal = pal,
     values = map_data$source,
     position = "bottomleft",
-    title = paste0("Counties Included in County-Month Dataset"),
+    title = paste0("Counties included in aggregate data"),
     labFormat = labelFormat(suffix = "")
   ) %>%
   leaflet::setView(lng = -100, lat = 54.5, zoom = 3)
-```
 
-```{r, echo = F, message = F}
 map
+
 ```
 
 ### Number and % of counties included in the final output, by state
@@ -220,46 +192,39 @@ The table below presents county coverage by state. The tabs above the table can 
 ```{r, echo = FALSE, message = FALSE, warning = FALSE}
 
 counties %>% 
-  
-  
-  
-  county_month_aggregated
-  
-  
-
-county_month_pre_agg_joined %>%
-  distinct(county_geoid_coalesced, .keep_all = TRUE) %>%
-  left_join(counties, by = join_by("geocode_std_st" == "STUSPS")) %>%
-  distinct() %>%
-  group_by(grantee_state) %>%
-  mutate(total_counties = n_distinct(COUNTYFP)) %>%
-  summarize(
-    total = n_distinct(county_geoid_coalesced),
-    pct_total_counties_covered = (total / total_counties)
-  ) %>%
-mutate(pct_total_counties_covered = round(pct_total_counties_covered, 3)) %>% 
-  distinct() %>%
+  st_drop_geometry() %>% 
+  mutate(in_dataset = GEOID %in% county_month_aggregated$county_geoid_coalesced) %>% 
+  group_by(state, in_dataset) %>% 
+  summarize(counties_included = n()) %>% 
+  mutate(percent_included = counties_included / sum(counties_included)) %>% 
+  ungroup() %>% 
+  filter(in_dataset) %>% 
+  select(-in_dataset) %>% 
+  arrange(state) %>% 
+  rename_with(~to_sentence_case(.)) %>% 
   datatable() %>% 
-  formatPercentage("pct_total_counties_covered", digits = 3)
+  formatPercentage("Percent included", digits = 1)
+  
 ```
 
 ## County-Total Dataset
 
 ```{r, echo = FALSE, message = FALSE, warning = FALSE}
-county_total_pre_agg_joined %>%
-  distinct(county_geoid_coalesced, .keep_all = TRUE) %>%
-  left_join(counties, by = join_by("geocode_std_st" == "STUSPS")) %>%
-  distinct() %>%
-  group_by(grantee_state) %>%
-  mutate(total_counties = n_distinct(COUNTYFP)) %>%
-  summarize(
-    total = n_distinct(county_geoid_coalesced),
-    pct_total_counties_covered = (total / total_counties) 
-  ) %>%
-mutate(pct_total_counties_covered = round(pct_total_counties_covered, 3)) %>% 
-  distinct() %>%
+
+counties %>% 
+  st_drop_geometry() %>% 
+  mutate(in_dataset = GEOID %in% county_total_aggregated$county_geoid_coalesced) %>% 
+  group_by(state, in_dataset) %>% 
+  summarize(counties_included = n()) %>% 
+  mutate(percent_included = counties_included / sum(counties_included)) %>% 
+  ungroup() %>% 
+  filter(in_dataset) %>% 
+  select(-in_dataset) %>% 
+  arrange(state) %>% 
+  rename_with(~to_sentence_case(.)) %>% 
   datatable() %>% 
-  formatPercentage("pct_total_counties_covered", digits = 3)
+  formatPercentage("Percent included", digits = 1)
+
 ```
 
 :::
@@ -277,45 +242,48 @@ Therefore, if a county includes a large proportion of records with missing addre
 ## County-Month Dataset
 
 ```{r, echo = FALSE, message = FALSE, warning = FALSE}
-county_month_pre_agg_joined %>% 
-  mutate(missing_address = street_address == as.character(row_number())) %>%
-  group_by(county_geoid_coalesced, missing_address) %>% 
-  summarize(n = n()) %>% 
-  mutate(percent = round((n / sum(n)), 3)) %>% 
-  filter(missing_address == TRUE) %>% 
+
+county_month_missing_address %>% 
   select(-missing_address) %>% 
   rename(n_missing_addresses = n) %>% 
   arrange(desc(percent)) %>% 
-  mutate(percent = round(percent, 3)) %>% 
-  left_join(counties %>% st_drop_geometry() %>% select(GEOID, NAMELSAD, STUSPS), 
-    by = join_by("county_geoid_coalesced" == "GEOID")) %>% 
-rename(county_name = NAMELSAD, state = STUSPS) %>%
-relocate(county_geoid_coalesced, county_name, state) %>% 
+  left_join(counties %>% 
+              st_drop_geometry() %>% 
+              select(GEOID, NAMELSAD, STUSPS), 
+            by = join_by("county_geoid_coalesced" == "GEOID")) %>% 
+  select(county_GEOID = county_geoid_coalesced,
+         county_name = NAMELSAD, 
+         state = STUSPS,
+         n_missing_addresses,
+         percent_missing_addresses = percent) %>%
+  rename_with(~to_any_case(., case = "title", abbreviations = "GEOID")) %>% 
   datatable() %>% 
-  formatRound(c("n_missing_addresses"), digits = 0) %>% 
-  formatPercentage("percent", digits = 3)
+  formatRound(c("N Missing Addresses"), digits = 0) %>% 
+  formatPercentage("Percent Missing Addresses", digits = 1)
 
 ```
 
 ## County-Total Dataset
 
 ```{r, echo = FALSE, message = FALSE, warning = FALSE}
-county_total_pre_agg_joined %>% 
-  mutate(missing_address = street_address == as.character(row_number())) %>%
-  group_by(county_geoid_coalesced, missing_address) %>% 
-  summarize(n = n()) %>% 
-  mutate(percent = round((n / sum(n)), 3)) %>% 
-  filter(missing_address == TRUE) %>% 
+
+county_total_missing_address %>% 
   select(-missing_address) %>% 
-  rename(n_missing_addresses = n) %>% left_join(counties %>% st_drop_geometry() %>% select(GEOID, NAMELSAD, STUSPS), 
-    by = join_by("county_geoid_coalesced" == "GEOID")) %>% 
-rename(county_name = NAMELSAD, state = STUSPS) %>%
-relocate(county_geoid_coalesced, county_name, state) %>% 
+  rename(n_missing_addresses = n) %>% 
   arrange(desc(percent)) %>% 
-  mutate(percent = round(percent, 3)) %>% 
+  left_join(counties %>% 
+              st_drop_geometry() %>% 
+              select(GEOID, NAMELSAD, STUSPS), 
+            by = join_by("county_geoid_coalesced" == "GEOID")) %>% 
+  select(county_GEOID = county_geoid_coalesced,
+         county_name = NAMELSAD, 
+         state = STUSPS,
+         n_missing_addresses,
+         percent_missing_addresses = percent) %>%
+  rename_with(~to_any_case(., case = "title", abbreviations = "GEOID")) %>% 
   datatable() %>% 
-  formatRound(c("n_missing_addresses"), digits = 0) %>% 
-  formatPercentage("percent", digits = 3)
+  formatRound(c("N Missing Addresses"), digits = 0) %>% 
+  formatPercentage("Percent Missing Addresses", digits = 1)
 
 ```
 
@@ -333,20 +301,18 @@ The tables below present information relating to data coverage and quality. Thes
 
 ```{r, echo = FALSE, message = FALSE, warning = FALSE}
 
-# total number of grantees, by grantee_geographic_level
-
-county_month_selected_grantees %>% 
+county_month_thresholds %>% 
   group_by(geographic_level, threshold_passing_with_complete_geography) %>%
-  summarize(number_of_grantees = n ()) %>% 
-  mutate(percent_included = number_of_grantees / sum(number_of_grantees)) %>% 
+  summarize(number_of_grantees_included = n ()) %>% 
+  mutate(percent_included = number_of_grantees_included / sum(number_of_grantees_included)) %>% 
   ungroup() %>% 
   filter(threshold_passing_with_complete_geography) %>% 
   select(-threshold_passing_with_complete_geography) %>% 
   mutate(geographic_level = fct_relevel(geographic_level, "State", "County", "City")) %>% 
   rename(grantee_type = geographic_level) %>% 
-  datatable() %>% 
-  formatPercentage("percent_included", 
-                   digits = 3)
+  rename_with(~to_sentence_case(.)) %>% 
+  datatable(options = list(paging = FALSE, searching = FALSE)) %>%  
+  formatPercentage("Percent included", digits = 1)
 
 ```
 
@@ -354,20 +320,19 @@ county_month_selected_grantees %>%
 
 ```{r, echo = FALSE, message = FALSE, warning = FALSE}
 
-# total number of grantees, by grantee_geographic_level
-
-county_total_selected_grantees %>% 
+county_total_thresholds %>% 
   group_by(geographic_level, threshold_passing_with_complete_geography) %>%
-  summarize(number_of_grantees = n ()) %>% 
-  mutate(percent_included = number_of_grantees / sum(number_of_grantees)) %>% 
+  summarize(number_of_grantees_included = n ()) %>% 
+  mutate(percent_included = number_of_grantees_included / sum(number_of_grantees_included)) %>% 
   ungroup() %>% 
   filter(threshold_passing_with_complete_geography) %>% 
   select(-threshold_passing_with_complete_geography) %>% 
   mutate(geographic_level = fct_relevel(geographic_level, "State", "County", "City")) %>% 
+  arrange(geographic_level) %>% 
   rename(grantee_type = geographic_level) %>% 
-  datatable() %>% 
-  formatPercentage("percent_included", 
-                   digits = 3)
+  rename_with(~to_sentence_case(.)) %>% 
+  datatable(options = list(paging = FALSE, searching = FALSE)) %>% 
+  formatPercentage("Percent included", digits = 1)
 
 ```
 
@@ -381,18 +346,19 @@ county_total_selected_grantees %>%
 
 ```{r, echo = FALSE, message = FALSE, warning = FALSE}
 
-county_month_selected_grantees %>% 
+county_month_thresholds %>% 
   group_by(grantee_state, geographic_level, threshold_passing_with_complete_geography) %>%
-  summarize(number_of_grantees = n ()) %>% 
-  mutate(percent_included = number_of_grantees / sum(number_of_grantees)) %>% 
+  summarize(number_of_grantees_included = n ()) %>% 
+  mutate(percent_included = number_of_grantees_included / sum(number_of_grantees_included)) %>% 
   ungroup() %>% 
   filter(threshold_passing_with_complete_geography) %>% 
   select(-threshold_passing_with_complete_geography) %>% 
   mutate(geographic_level = fct_relevel(geographic_level, "State", "County", "City")) %>% 
+  arrange(grantee_state, geographic_level) %>% 
   rename(grantee_type = geographic_level) %>% 
+  rename_with(~to_sentence_case(.)) %>% 
   datatable() %>% 
-  formatPercentage("percent_included", 
-                   digits = 3)
+  formatPercentage("Percent included", digits = 1)
 
 ```
 
@@ -400,18 +366,19 @@ county_month_selected_grantees %>%
 
 ```{r, echo = FALSE, message = FALSE, warning = FALSE}
 
-county_total_selected_grantees %>% 
+county_total_thresholds %>% 
   group_by(grantee_state, geographic_level, threshold_passing_with_complete_geography) %>%
-  summarize(number_of_grantees = n ()) %>% 
-  mutate(percent_included = number_of_grantees / sum(number_of_grantees)) %>% 
+  summarize(number_of_grantees_included = n ()) %>% 
+  mutate(percent_included = number_of_grantees_included / sum(number_of_grantees_included)) %>% 
   ungroup() %>% 
   filter(threshold_passing_with_complete_geography) %>% 
   select(-threshold_passing_with_complete_geography) %>% 
   mutate(geographic_level = fct_relevel(geographic_level, "State", "County", "City")) %>% 
+  arrange(grantee_state, geographic_level) %>% 
   rename(grantee_type = geographic_level) %>% 
+  rename_with(~to_sentence_case(.)) %>% 
   datatable() %>% 
-  formatPercentage("percent_included", 
-                   digits = 3)
+  formatPercentage("Percent included", digits = 1)
 
 ```
 
@@ -433,29 +400,33 @@ Please see [the Methods page](methods.md#step-5-variable-checks) for more detail
 ## County-Month Dataset
 
 ```{r, echo = F, message = F, warning = F}
-county_month_selected_grantees %>% 
+
+county_month_thresholds %>% 
   filter(threshold_passing_with_complete_geography == TRUE) %>% 
   filter(ok_percent_era1 < 0.9 | ok_percent_era2 < 0.9) %>% 
   select(grantee_state, grantee_name, 
          ok_percent_era1, ok_percent_era2) %>% 
   arrange(ok_percent_era2, ok_percent_era1) %>% 
+  rename_with(~to_any_case(., "title", abbreviations = c("OK", "ERA"))) %>% 
   datatable() %>% 
-  formatPercentage(c("ok_percent_era1", "ok_percent_era2"), 
-                   digits = 3)
+  formatPercentage(c("OK Percent ERA 1", "OK Percent ERA 2"), digits = 3)
+
 ```
 
 ## County-Total Dataset
 
 ```{r, echo = F, message = F, warning = F}
-county_total_selected_grantees %>% 
+
+county_total_thresholds %>% 
   filter(threshold_passing_with_complete_geography == TRUE) %>% 
   filter(ok_percent_era1 < 0.9 | ok_percent_era2 < 0.9) %>% 
   select(grantee_state, grantee_name, 
          ok_percent_era1, ok_percent_era2) %>% 
   arrange(ok_percent_era2, ok_percent_era1) %>% 
+  rename_with(~to_any_case(., "title", abbreviations = c("OK", "ERA"))) %>% 
   datatable() %>% 
-  formatPercentage(c("ok_percent_era1", "ok_percent_era2"), 
-                   digits = 3)
+  formatPercentage(c("OK Percent ERA 1", "OK Percent ERA 2"), digits = 3)
+
 ```
 
 :::
@@ -471,29 +442,35 @@ These grantees may not have fully reported their assistance spending, especially
 ## County-Month Dataset
 
 ```{r, echo = F, message = F, warning = F}
-county_month_selected_grantees %>% 
+
+county_month_thresholds %>% 
   filter(threshold_passing_with_complete_geography == TRUE) %>% 
   filter(percent_of_allocation_spent_era1 < 0.8 | percent_of_allocation_spent_era2 < 0.5) %>% 
   select(grantee_state, grantee_name, 
          percent_of_allocation_spent_era1, percent_of_allocation_spent_era2) %>% 
   arrange(percent_of_allocation_spent_era2, percent_of_allocation_spent_era1) %>% 
+  rename_with(~to_any_case(., "title", abbreviations = c("OK", "ERA"))) %>% 
   datatable() %>% 
-  formatPercentage(c("percent_of_allocation_spent_era1", "percent_of_allocation_spent_era2"), 
+  formatPercentage(c("Percent of Allocation Spent ERA 1", "Percent of Allocation Spent ERA 2"), 
                    digits = 3)
+
 ```
 
 ## County-Total Dataset
 
 ```{r, echo = F, message = F, warning = F}
-county_total_selected_grantees %>% 
+
+county_total_thresholds %>% 
   filter(threshold_passing_with_complete_geography == TRUE) %>% 
   filter(percent_of_allocation_spent_era1 < 0.8 | percent_of_allocation_spent_era2 < 0.5) %>% 
   select(grantee_state, grantee_name, 
          percent_of_allocation_spent_era1, percent_of_allocation_spent_era2) %>% 
   arrange(percent_of_allocation_spent_era2, percent_of_allocation_spent_era1) %>% 
+  rename_with(~to_any_case(., "title", abbreviations = c("OK", "ERA"))) %>% 
   datatable() %>% 
-  formatPercentage(c("percent_of_allocation_spent_era1", "percent_of_allocation_spent_era2"), 
+  formatPercentage(c("Percent of Allocation Spent ERA 1", "Percent of Allocation Spent ERA 2"), 
                    digits = 3)
+
 ```
 
 :::
