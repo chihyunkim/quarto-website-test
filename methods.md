@@ -72,7 +72,7 @@ If the duplication was due to misattribution of records to grantees with similar
 
 ### Across-file
 
-In a given PHPDF, a grantee could submit data data to Treasury in multiple files. In some cases (very commonly in the ERA1 PHPDF), multiple files with near-identical contents were included from the same grantee. If identical records (using the same definition as above) were included in multiple files from the same grantee, we kept all records from the file with the largest number of records, and dropped duplicated records from all other files of the same grantee.
+In a given PHPDF, a grantee could submit data to Treasury in multiple files. In some cases (very commonly in the ERA1 PHPDF), multiple files with near-identical contents were included from the same grantee. If identical records (using the same definition as above) were included in multiple files from the same grantee, we kept all records from the file with the largest number of records, and dropped duplicated records from all other files of the same grantee.
 
 ### Within-file
 
@@ -92,7 +92,7 @@ Within a given file from a given grantee, we keep the duplicate record with the 
 We report the following figures to illustrate the extent of de/duplication in each PHPDF:
 
 - ERA1 closeout: 5,621,334 rows dropped (42%)
-    - The large percentage here is due to many grantees submitting duplicated files with the same contents to Treasury
+    - The large percentage here is due to duplicate PHPDFs with different names stored in Treasury’s reporting system
 - ERA2 Q4: 54,293 rows dropped (0.9%)
 - ERA2 Q2: 12,261 rows dropped (0.3%)
 - ERA2 Q1: 98,317 rows dropped (2%)
@@ -108,7 +108,7 @@ For each program, we used two methods:
 
 For county-level grantees and city-level grantees whose jurisdictions are included in only one geographic county, we imputed as the county of payment the geographic county of the grantee's jurisdiction.
 
-### Use City + ZIP : county crosswalk for states
+### Use City + ZIP: county crosswalk for states
 
 For state programs, this was a bit more complicated. We utilized a [ZIP code-county crosswalk](https://www.huduser.gov/portal/datasets/usps_crosswalk.html) from HUD.
 
@@ -158,7 +158,8 @@ First, for each PHPDF, we calculated whether each grantee met the following thre
 - Variable quality: At least 79% of records had acceptable data across all variables needed for the applicable aggregation type (see Step 5 above for details on the tests)
 - Spending completeness: The aggregate sum of the grantee's payments (excluding negative payments) were:
 	- Between 80% and 110% of its allocation (ERA1) or 50% and 110% of its allocation (ERA2); or
-	- If between 50% and 80% of its allocation (ERA1) or 25% and 50% of its allocation (ERA2), the reported spending was within 20% of the aggregate spending as reported to Treasury, either individually or for all grantees in the state together
+	- If between 50% and 80% of its allocation (ERA1) or 25% and 50% of its allocation (ERA2), the reported spending was within 20% of the aggregate spending as reported to Treasury, either individually or for all grantees in the state together; or
+	- Confirmed by Treasury to be an accurate reflection of low spending by the grantee
 	
 Second, we picked an ERA2 PHPDF source for each grantee, taking the most recent PHPDF for which a grantee passed (if any quarters passed) or the most recent PHPDF we had data for the grantee (if all quarters failed).
 
