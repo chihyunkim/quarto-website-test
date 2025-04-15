@@ -133,7 +133,7 @@ We first generated a series of variable-specific data quality checks, testing ea
 -   Whether the record was within the geographic jurisdiction of the grantee
 -   Whether the record was locatable to a specific county
 -   Whether the payment amount was recorded, and if so, whether it was negative, zero, or anomalously large
-    -   We defined 'anomalously large' as an amount exceeding the 99.9th percentile value of all records in ERA1 closeout and ERA2 Q4 (\$73,541).
+    -   We defined 'anomalously large' as an amount exceeding the 99.9th percentile value of all records in ERA1 closeout and ERA2 Q4 (which was $73,541).
 -   Whether the date of payment was recorded, and if so, whether it was impossibly early (before January, 1, 2021 for ERA1, or before March 1, 2021 for ERA2) or late (after December 31, 2022 for ERA1, or after the end of the reporting quarter for ERA2)
 -   Whether the payee type (landlord, utility, tenant) was recorded
 -   Whether the assistance type (rent, utilities, other) was recorded
@@ -206,12 +206,12 @@ Fourth, we constructed unique address IDs. To do this, we first extracted unit n
 
 We then assigned a unique ID to each unique concatenated value of:
 
-- geocoded address 
-	- if geocoded address was missing, we used the original address if available
-	- if there was no address at all, we used the record's row number
-- unit number
-- geocoded ZIP code
-- geocoded state
+- Geocoded address 
+	- If geocoded address was missing, we used the original address if available
+	- If there was no address at all, we used the record's row number
+- Unit number
+- Geocoded ZIP code
+- Geocoded state
 
 ## Step 8: Aggregation
 
