@@ -292,7 +292,7 @@ ul.task-list li input[type="checkbox"] {
 <li>Whether the record was locatable to a specific county</li>
 <li>Whether the payment amount was recorded, and if so, whether it was negative, zero, or anomalously large
 <ul>
-<li>We defined ‘anomalously large’ as an amount exceeding the 99.9th percentile value of all records in ERA1 closeout and ERA2 Q4 ($73,541).</li>
+<li>We defined ‘anomalously large’ as an amount exceeding the 99.9th percentile value of all records in ERA1 closeout and ERA2 Q4 (which was $73,541).</li>
 </ul></li>
 <li>Whether the date of payment was recorded, and if so, whether it was impossibly early (before January, 1, 2021 for ERA1, or before March 1, 2021 for ERA2) or late (after December 31, 2022 for ERA1, or after the end of the reporting quarter for ERA2)</li>
 <li>Whether the payee type (landlord, utility, tenant) was recorded</li>
@@ -369,14 +369,14 @@ ul.task-list li input[type="checkbox"] {
 </ul>
 <p>We then assigned a unique ID to each unique concatenated value of:</p>
 <ul>
-<li>geocoded address
+<li>Geocoded address
 <ul>
-<li>if geocoded address was missing, we used the original address if available</li>
-<li>if there was no address at all, we used the record’s row number</li>
+<li>If geocoded address was missing, we used the original address if available</li>
+<li>If there was no address at all, we used the record’s row number</li>
 </ul></li>
-<li>unit number</li>
-<li>geocoded ZIP code</li>
-<li>geocoded state</li>
+<li>Unit number</li>
+<li>Geocoded ZIP code</li>
+<li>Geocoded state</li>
 </ul>
 </section>
 <section id="step-8-aggregation" class="level2">
