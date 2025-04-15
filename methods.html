@@ -264,11 +264,13 @@ ul.task-list li input[type="checkbox"] {
 </section>
 <section id="step-4-county-imputation" class="level2">
 <h2 class="anchored" data-anchor-id="step-4-county-imputation">Step 4: County imputation</h2>
-<p>In this step, we imputed county locations for payments that were missing a geocoded county. This step was necessary for 54,831 rows of payment data where the county geo-identifier was missing.</p>
-<p>For each program, we used two methods:</p>
+<p>In this step, we imputed county locations for payments that were missing a geocoded county.</p>
+<p>Before imputation, 54,831 rows in the ERA1 PHPDF and 265,703 rows in the ERA2 (2023 Q4) PHPDF were missing county location.</p>
+<p>Our imputation process assigned county locations to 29,445 rows previously missing county locations in ERA1 (54% of missing-county records) and to 123,788 rows for ERA2 (47%).</p>
+<p>For each PHPDF, we used two methods:</p>
 <section id="use-grantee-geography-for-countiessingle-county-cities" class="level3">
 <h3 class="anchored" data-anchor-id="use-grantee-geography-for-countiessingle-county-cities">Use grantee geography for counties/single-county cities</h3>
-<p>For county-level grantees and city-level grantees whose jurisdictions are included in only one geographic county, we imputed as the county of payment the geographic county of the grantee’s jurisdiction.</p>
+<p>For county-level grantees and city-level grantees whose jurisdictions were included in only one geographic county, we imputed as the county of payment the geographic county of the grantee’s jurisdiction.</p>
 </section>
 <section id="use-city-zip-county-crosswalk-for-states" class="level3">
 <h3 class="anchored" data-anchor-id="use-city-zip-county-crosswalk-for-states">Use City + ZIP: county crosswalk for states</h3>
@@ -278,7 +280,7 @@ ul.task-list li input[type="checkbox"] {
 </section>
 <section id="coalesce-county_geoid" class="level3">
 <h3 class="anchored" data-anchor-id="coalesce-county_geoid">Coalesce <code>county_geoid</code></h3>
-<p>We then coalesced from <code>geocode_county_geoid</code> and <code>imputed_county_geoid</code>. If a payment already had a value for <code>geocode_county_geoid</code>, then we kept that value. If not, it took on the value of <code>imputed_county_geoid</code>. At the beginning, 54,831 rows were missing <code>geocode_county_geoid</code>. After imputation, 25,604 rows were missing <code>county_geoid_coalesced</code>. These rows are subsequently dropped (in step 7). Therefore, we imputed values for counties for 29,227 payments. In all subsequent data processing steps, we use this coalesced county assignment.</p>
+<p>We then coalesced from <code>geocode_county_geoid</code> and <code>imputed_county_geoid</code>. If a payment already had a value for <code>geocode_county_geoid</code>, then we kept that value. If not, it took on the value of <code>imputed_county_geoid</code>. We used this coalesced county assignment variable in all subsequent data processing steps.</p>
 </section>
 </section>
 <section id="step-5-variable-checks" class="level2">
@@ -336,13 +338,13 @@ ul.task-list li input[type="checkbox"] {
 <p>Flowcharts illustrating these thresholding steps and the number of grantees dropped at each juncture are available below.</p>
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
-<p><img src="images/era_grantees_county_total_thresholding_flowchart_2025-03-18.svg" class="img-fluid figure-img"></p>
+<p><img src="images/era_grantees_county_total_thresholding_flowchart_2025-04-14.svg" class="img-fluid figure-img"></p>
 <figcaption>Flowchart illustrating number of grantees affected by each thresholding step, for the county-total aggregation</figcaption>
 </figure>
 </div>
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
-<p><img src="images/era_grantees_county_month_thresholding_flowchart_2025-03-14.svg" class="img-fluid figure-img"></p>
+<p><img src="images/era_grantees_county_month_thresholding_flowchart_2025-04-14.svg" class="img-fluid figure-img"></p>
 <figcaption>Flowchart illustrating number of grantees affected by each thresholding step, for the county-month aggregation</figcaption>
 </figure>
 </div>
