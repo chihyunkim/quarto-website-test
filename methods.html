@@ -135,7 +135,7 @@ ul.task-list li input[type="checkbox"] {
   <li><a href="#step-4-county-imputation" id="toc-step-4-county-imputation" class="nav-link" data-scroll-target="#step-4-county-imputation">Step 4: County imputation</a>
   <ul class="collapse">
   <li><a href="#use-grantee-geography-for-countiessingle-county-cities" id="toc-use-grantee-geography-for-countiessingle-county-cities" class="nav-link" data-scroll-target="#use-grantee-geography-for-countiessingle-county-cities">Use grantee geography for counties/single-county cities</a></li>
-  <li><a href="#use-city-zip-county-crosswalk-for-states" id="toc-use-city-zip-county-crosswalk-for-states" class="nav-link" data-scroll-target="#use-city-zip-county-crosswalk-for-states">Use City + ZIP : county crosswalk for states</a></li>
+  <li><a href="#use-city-zip-county-crosswalk-for-states" id="toc-use-city-zip-county-crosswalk-for-states" class="nav-link" data-scroll-target="#use-city-zip-county-crosswalk-for-states">Use City + ZIP: county crosswalk for states</a></li>
   <li><a href="#coalesce-county_geoid" id="toc-coalesce-county_geoid" class="nav-link" data-scroll-target="#coalesce-county_geoid">Coalesce <code>county_geoid</code></a></li>
   </ul></li>
   <li><a href="#step-5-variable-checks" id="toc-step-5-variable-checks" class="nav-link" data-scroll-target="#step-5-variable-checks">Step 5: Variable checks</a></li>
@@ -232,7 +232,7 @@ ul.task-list li input[type="checkbox"] {
 </section>
 <section id="across-file" class="level3">
 <h3 class="anchored" data-anchor-id="across-file">Across-file</h3>
-<p>In a given PHPDF, a grantee could submit data data to Treasury in multiple files. In some cases (very commonly in the ERA1 PHPDF), multiple files with near-identical contents were included from the same grantee. If identical records (using the same definition as above) were included in multiple files from the same grantee, we kept all records from the file with the largest number of records, and dropped duplicated records from all other files of the same grantee.</p>
+<p>In a given PHPDF, a grantee could submit data to Treasury in multiple files. In some cases (very commonly in the ERA1 PHPDF), multiple files with near-identical contents were included from the same grantee. If identical records (using the same definition as above) were included in multiple files from the same grantee, we kept all records from the file with the largest number of records, and dropped duplicated records from all other files of the same grantee.</p>
 </section>
 <section id="within-file" class="level3">
 <h3 class="anchored" data-anchor-id="within-file">Within-file</h3>
@@ -253,7 +253,7 @@ ul.task-list li input[type="checkbox"] {
 <ul>
 <li>ERA1 closeout: 5,621,334 rows dropped (42%)
 <ul>
-<li>The large percentage here is due to many grantees submitting duplicated files with the same contents to Treasury</li>
+<li>The large percentage here is due to duplicate PHPDFs with different names stored in Treasury’s reporting system</li>
 </ul></li>
 <li>ERA2 Q4: 54,293 rows dropped (0.9%)</li>
 <li>ERA2 Q2: 12,261 rows dropped (0.3%)</li>
@@ -271,7 +271,7 @@ ul.task-list li input[type="checkbox"] {
 <p>For county-level grantees and city-level grantees whose jurisdictions are included in only one geographic county, we imputed as the county of payment the geographic county of the grantee’s jurisdiction.</p>
 </section>
 <section id="use-city-zip-county-crosswalk-for-states" class="level3">
-<h3 class="anchored" data-anchor-id="use-city-zip-county-crosswalk-for-states">Use City + ZIP : county crosswalk for states</h3>
+<h3 class="anchored" data-anchor-id="use-city-zip-county-crosswalk-for-states">Use City + ZIP: county crosswalk for states</h3>
 <p>For state programs, this was a bit more complicated. We utilized a <a href="https://www.huduser.gov/portal/datasets/usps_crosswalk.html">ZIP code-county crosswalk</a> from HUD.</p>
 <p>First, we determined which zip codes in the crosswalk fell into just one county. Similarly to above, we then joined the single-county zips to the payment files, but this time, by zip code and state. We found that joining by city was too limiting, as the cities were described differently in each file (for example, the same address could be described as being in Las Vegas or North Las Vegas).</p>
 <p>The next, slightly more complicated step, was to join zip codes that fell within multiple counties. To be able to join one-to-one, we filtered the HUD county-zip crosswalk file to include counties where 95% of a zip code was within the county. After that, we could simply join by zip code and state.</p>
@@ -320,7 +320,8 @@ ul.task-list li input[type="checkbox"] {
 <li>Spending completeness: The aggregate sum of the grantee’s payments (excluding negative payments) were:
 <ul>
 <li>Between 80% and 110% of its allocation (ERA1) or 50% and 110% of its allocation (ERA2); or</li>
-<li>If between 50% and 80% of its allocation (ERA1) or 25% and 50% of its allocation (ERA2), the reported spending was within 20% of the aggregate spending as reported to Treasury, either individually or for all grantees in the state together</li>
+<li>If between 50% and 80% of its allocation (ERA1) or 25% and 50% of its allocation (ERA2), the reported spending was within 20% of the aggregate spending as reported to Treasury, either individually or for all grantees in the state together; or</li>
+<li>Confirmed by Treasury to be an accurate reflection of low spending by the grantee</li>
 </ul></li>
 </ul>
 <p>Second, we picked an ERA2 PHPDF source for each grantee, taking the most recent PHPDF for which a grantee passed (if any quarters passed) or the most recent PHPDF we had data for the grantee (if all quarters failed).</p>
