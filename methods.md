@@ -100,13 +100,17 @@ We report the following figures to illustrate the extent of de/duplication in ea
 
 ## Step 4: County imputation
 
-In this step, we imputed county locations for payments that were missing a geocoded county. This step was necessary for 54,831 rows of payment data where the county geo-identifier was missing.
+In this step, we imputed county locations for payments that were missing a geocoded county.
 
-For each program, we used two methods:
+Before imputation, 54,831 rows in the ERA1 PHPDF and 265,703 rows in the ERA2 (2023 Q4) PHPDF were missing county location.
+
+Our imputation process assigned county locations to 29,445 rows previously missing county locations in ERA1 (54% of missing-county records) and to 123,788 rows for ERA2 (47%).
+
+For each PHPDF, we used two methods:
 
 ### Use grantee geography for counties/single-county cities
 
-For county-level grantees and city-level grantees whose jurisdictions are included in only one geographic county, we imputed as the county of payment the geographic county of the grantee's jurisdiction.
+For county-level grantees and city-level grantees whose jurisdictions were included in only one geographic county, we imputed as the county of payment the geographic county of the grantee's jurisdiction.
 
 ### Use City + ZIP: county crosswalk for states
 
@@ -118,7 +122,7 @@ The next, slightly more complicated step, was to join zip codes that fell within
 
 ### Coalesce `county_geoid`
 
-We then coalesced from `geocode_county_geoid` and `imputed_county_geoid`. If a payment already had a value for `geocode_county_geoid`, then we kept that value. If not, it took on the value of `imputed_county_geoid`. At the beginning, 54,831 rows were missing `geocode_county_geoid`. After imputation, 25,604 rows were missing `county_geoid_coalesced`. These rows are subsequently dropped (in step 7). Therefore, we imputed values for counties for 29,227 payments. In all subsequent data processing steps, we use this coalesced county assignment.
+We then coalesced from `geocode_county_geoid` and `imputed_county_geoid`. If a payment already had a value for `geocode_county_geoid`, then we kept that value. If not, it took on the value of `imputed_county_geoid`. We used this coalesced county assignment variable in all subsequent data processing steps.
 
 ## Step 5: Variable checks
 
@@ -175,9 +179,9 @@ We defined 'significantly overlap' as: more than 20% of the population of the ge
 
 Flowcharts illustrating these thresholding steps and the number of grantees dropped at each juncture are available below.
 
-![Flowchart illustrating number of grantees affected by each thresholding step, for the county-total aggregation](images/era_grantees_county_total_thresholding_flowchart_2025-03-18.svg)
+![Flowchart illustrating number of grantees affected by each thresholding step, for the county-total aggregation](images/era_grantees_county_total_thresholding_flowchart_2025-04-14.svg)
 
-![Flowchart illustrating number of grantees affected by each thresholding step, for the county-month aggregation](images/era_grantees_county_month_thresholding_flowchart_2025-03-14.svg)
+![Flowchart illustrating number of grantees affected by each thresholding step, for the county-month aggregation](images/era_grantees_county_month_thresholding_flowchart_2025-04-14.svg)
 
 ## Step 7: Pre-aggregation
 
