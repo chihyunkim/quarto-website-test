@@ -93,7 +93,7 @@ county_total_missing_address <- read_csv(
 
 ```
 
-```{r Renter population}
+```{r Renter population, include = FALSE}
 
 # Renter population for 2021 5-year ACS, for coverage comparison
 renter_households <- 
