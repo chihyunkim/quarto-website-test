@@ -1,5 +1,7 @@
 # Download data
 
+:exclamation: **Important: Please review the documentation on the [project website](https://housinginitiative.github.io/era-county-level-dataset-public/) before downloading or using the data** :exclamation:
+
 ## Files
 
 We provide two different aggregations:
@@ -40,18 +42,14 @@ We highlight the following data limitations:
 - **Missing grantees may affect entire geographies** even if other grantees serving that geography have good data quality; for example, if a state grantee is missing, every county in that state will be missing. The county-month dataset provides coverage across 2,308 county-equivalents (73% of county-equivalents, 63% of U.S. renter population), while the county-total dataset offers coverage in 2,364 county-equivalents (75% of county-equivalents, 65% of U.S. renter population).
 - **Not every payment made by a grantee may have been reported by the grantee**. Particularly for ERA2, grantees were required to submit cumulative data up to the reporting period, but not all may have done so. We threshold the data to drop grantees unlikely to be reporting full data, but this may not have screened out every such grantee.
 - **Grantees may have reported addresses for the payee** (landlord or utility), even though they were required to report addresses for the assisted property. We excluded payments made outside of the geographic jurisdiction of the grantee, since these payments by definition do not record the address of the assisted household, but this may not have filtered out all misreported addresses.
-- **Up to 20% of a grantee's records may be dropped** due to data quality issues (for example, missing payment amounts), while still passing our data quality thresholds. Users should consult the data coverage tables included [here](data_coverage_descriptives.qmd#grantees-included-with-less-than-90-variable-quality) for a list of these grantees.
+- **Up to 20% of a grantee's records may be dropped** due to data quality issues (for example, missing payment amounts), while still passing our data quality thresholds. Users should consult the data coverage tables included [here](https://housinginitiative.github.io/era-county-level-dataset-public/data_coverage_descriptives.html#grantees-included-with-less-than-90-variable-quality) for a list of these grantees.
 - **The months in the county-month aggregation refer to dates of payment, not dates of assistance**. Payments could address both arrears and forward rent, so payment months should not be conflated with months over which households were assisted.
 - **Grantees differed in how they structured their payments**. Some may have made a separate payment for each month of assistance, while others may have made one payment for the entire duration of assistance. Therefore, an address which received 3 months of forward rent could show up across 3 months if the grantee made 3 separate payments, or across one month if the grantee made one payment for all three months.
-- **Counties containing a large share of missing-address records may have an inflated count of unique assisted addresses**. This was because records which could be located to a county but did not include address information were treated as unique for the purpose of counting unique addresses. Users should consult the data coverage tables included [here](data_coverage_descriptives.qmd#counties-with-high-share-of-missing-addresses) for a list of these counties.
+- **Counties containing a large share of missing-address records may have an inflated count of unique assisted addresses**. This was because records which could be located to a county but did not include address information were treated as unique for the purpose of counting unique addresses. Users should consult the data coverage tables included [here](https://housinginitiative.github.io/era-county-level-dataset-public/data_coverage_descriptives.html#counties-with-high-share-of-missing-addresses) for a list of these counties.
 - **Jurisdictions outside of the 50 states and Washington, D.C., are not included** due to geocoding difficulties for addresses in U.S. territories.
 - **Payments made by Tribal grantees are not included**, because they did not submit PHPDF data.
 - **Dollar amounts reported are nominal values** and are not adjusted for inflation.
 
-For more information on which grantees and records are included in the aggregation, please refer to the data coverage descriptives provided [here](data_coverage_descriptives.qmd).
+For more information on which grantees and records are included in the aggregation, please refer to the data coverage descriptives provided [here](https://housinginitiative.github.io/era-county-level-dataset-public/data_coverage_descriptives.html).
 
-## Download
-
-The aggregated data files may be found as CSV's at this project's public Github repository, [here](https://github.com/housinginitiative/era-county-level-dataset-public/tree/main/data/aggregated_data).
-
-Potential users of these data are highly encouraged to review the list of limitations above and to inspect the [data coverage descriptives](data_coverage_descriptives.qmd) in light of their particular needs.
+Potential users of these data are highly encouraged to review the list of limitations above and to inspect the data coverage descriptives in light of their particular needs.
