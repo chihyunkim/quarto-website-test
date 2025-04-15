@@ -18,6 +18,7 @@ library(tidyverse)
 library(arrow)
 library(leaflet)
 library(tigris)
+library(tidycensus)
 library(sf)
 library(DT)
 library(janitor)
@@ -40,7 +41,7 @@ county_month_aggregated <- read_csv(
   str_c(
     data_path,
     "aggregated_data",
-    "county_month_aggregated_2025-04-02.csv",
+    "county_month_aggregated_2025-04-14.csv",
     sep = "/"
   )
 )
@@ -49,7 +50,7 @@ county_total_aggregated <- read_csv(
   str_c(
     data_path,
     "aggregated_data",
-    "county_total_aggregated_2025-04-02.csv",
+    "county_total_aggregated_2025-04-14.csv",
     sep = "/"
   )
 )
@@ -59,7 +60,7 @@ county_total_aggregated <- read_csv(
 county_month_thresholds <- read_csv(
   str_c(data_path,
         "coverage_data",
-        "county_month_selected_grantees_2025-03-21.csv",
+        "county_month_selected_grantees_2025-04-14.csv",
         sep = "/"
   )
 )
@@ -67,7 +68,7 @@ county_month_thresholds <- read_csv(
 county_total_thresholds <- read_csv(
   str_c(data_path,
         "coverage_data",
-        "county_total_selected_grantees_2025-03-21.csv",
+        "county_total_selected_grantees_2025-04-14.csv",
         sep = "/"
   )
 )
@@ -77,7 +78,7 @@ county_total_thresholds <- read_csv(
 county_month_missing_address <- read_csv(
   str_c(data_path,
         "coverage_data",
-        "county_month_missing_address_summary_2025-04-02.csv",
+        "county_month_missing_address_summary_2025-04-14.csv",
         sep = "/"
   )
 )
@@ -85,10 +86,19 @@ county_month_missing_address <- read_csv(
 county_total_missing_address <- read_csv(
   str_c(data_path,
         "coverage_data",
-        "county_total_missing_address_summary_2025-04-02.csv",
+        "county_total_missing_address_summary_2025-04-14.csv",
         sep = "/"
   )
 )
+
+```
+
+```{r Renter population}
+
+# Renter population for 2021 5-year ACS, for coverage comparison
+renter_households <- 
+  get_acs(geography = "county", year = 2021, survey = "acs5",
+          variables = "B25003_003")
 
 ```
 
@@ -110,7 +120,10 @@ counties <- counties_raw %>%
                        "United States Virgin Islands", 
                        "Guam", 
                        "Commonwealth of the Northern Mariana Islands", 
-                       "American Samoa"))
+                       "American Samoa")) %>% 
+  left_join(renter_households %>% 
+              select(GEOID, renter_households = estimate),
+            by = "GEOID")
 
 ```
 
@@ -119,6 +132,8 @@ counties <- counties_raw %>%
 ### Map of counties included in final outputs
 
 The map below shows which counties are a part of the county-total aggregation, the county-month aggregation, or both.
+
+Please note that the aggregated datasets do not include U.S. territories or payments made by Tribal grantees.
 
 ```{r, include = F, message = F}
 
@@ -185,9 +200,61 @@ map
 
 ```
 
-### Number and % of counties included in the final output, by state
+### Number and % of counties included in the final output
 
-The table below presents county coverage by state. The tabs above the table can be toggled to view data for each dataset.
+#### Nationwide
+
+The table below presents county coverage at the nationwide level, both as a percentage of the number of counties and as a percentage of renter households in covered counties in the 2021 5-year ACS. The tabs above the table can be toggled to view data for each dataset.
+
+::: panel-tabset
+
+## County-Month Dataset
+
+```{r, echo = FALSE, message = FALSE, warning = FALSE}
+
+counties %>% 
+  st_drop_geometry() %>% 
+  mutate(in_dataset = GEOID %in% county_month_aggregated$county_geoid_coalesced) %>% 
+  group_by(in_dataset) %>% 
+  summarize(counties_included = n(), 
+            renter_households = sum(renter_households)) %>% 
+  mutate(percent_counties_included = counties_included / sum(counties_included)) %>% 
+  mutate(percent_renter_households = renter_households / sum(renter_households)) %>% 
+  ungroup() %>% 
+  filter(in_dataset) %>% 
+  select(-in_dataset, -renter_households) %>% 
+  rename_with(~to_sentence_case(.)) %>% 
+  datatable(options = list(paging = FALSE, searching = FALSE)) %>%  
+  formatPercentage(c("Percent counties included", "Percent renter households"), digits = 1)
+  
+```
+
+## County-Total Dataset
+
+```{r, echo = FALSE, message = FALSE, warning = FALSE}
+
+counties %>% 
+  st_drop_geometry() %>% 
+  mutate(in_dataset = GEOID %in% county_total_aggregated$county_geoid_coalesced) %>% 
+  group_by(in_dataset) %>% 
+  summarize(counties_included = n(), 
+            renter_households = sum(renter_households)) %>% 
+  mutate(percent_counties_included = counties_included / sum(counties_included)) %>% 
+  mutate(percent_renter_households = renter_households / sum(renter_households)) %>% 
+  ungroup() %>% 
+  filter(in_dataset) %>% 
+  select(-in_dataset, -renter_households) %>% 
+  rename_with(~to_sentence_case(.)) %>% 
+  datatable(options = list(paging = FALSE, searching = FALSE)) %>%  
+  formatPercentage(c("Percent counties included", "Percent renter households"), digits = 1)
+  
+```
+
+:::
+
+#### By state
+
+The table below presents county coverage broken down by state.
 
 ::: panel-tabset
 
@@ -199,15 +266,17 @@ counties %>%
   st_drop_geometry() %>% 
   mutate(in_dataset = GEOID %in% county_month_aggregated$county_geoid_coalesced) %>% 
   group_by(state, in_dataset) %>% 
-  summarize(counties_included = n()) %>% 
-  mutate(percent_included = counties_included / sum(counties_included)) %>% 
+  summarize(counties_included = n(), 
+            renter_households = sum(renter_households)) %>% 
+  mutate(percent_counties_included = counties_included / sum(counties_included)) %>% 
+  mutate(percent_renter_households = renter_households / sum(renter_households)) %>% 
   ungroup() %>% 
   filter(in_dataset) %>% 
-  select(-in_dataset) %>% 
+  select(-in_dataset, -renter_households) %>% 
   arrange(state) %>% 
   rename_with(~to_sentence_case(.)) %>% 
   datatable() %>% 
-  formatPercentage("Percent included", digits = 1)
+  formatPercentage(c("Percent counties included", "Percent renter households"), digits = 1)
   
 ```
 
@@ -219,16 +288,18 @@ counties %>%
   st_drop_geometry() %>% 
   mutate(in_dataset = GEOID %in% county_total_aggregated$county_geoid_coalesced) %>% 
   group_by(state, in_dataset) %>% 
-  summarize(counties_included = n()) %>% 
-  mutate(percent_included = counties_included / sum(counties_included)) %>% 
+  summarize(counties_included = n(), 
+            renter_households = sum(renter_households)) %>% 
+  mutate(percent_counties_included = counties_included / sum(counties_included)) %>% 
+  mutate(percent_renter_households = renter_households / sum(renter_households)) %>% 
   ungroup() %>% 
   filter(in_dataset) %>% 
-  select(-in_dataset) %>% 
+  select(-in_dataset, -renter_households) %>% 
   arrange(state) %>% 
   rename_with(~to_sentence_case(.)) %>% 
   datatable() %>% 
-  formatPercentage("Percent included", digits = 1)
-
+  formatPercentage(c("Percent counties included", "Percent renter households"), digits = 1)
+  
 ```
 
 :::
