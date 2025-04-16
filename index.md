@@ -14,7 +14,7 @@ Over the course of the two programs, ERA funds could be used to address various 
 
 This dataset details aggregate ERA spending at the county-month level and the county-total level, based on payment data submitted by ERA grantees to Treasury as part of their periodic reporting responsibilities. We attempted to establish broad coverage across the nation, aiming to share these data publicly with researchers interested in applying ERA payments data to their own research. 
 
-This project was completed by a team comprising of the [Housing Initiative at Penn](https://www.housinginitiative.org/), the [Eviction Lab](https://evictionlab.org/) (Princeton University), and [Urban Deplacement Project](https://www.urbandisplacement.org/) (University of California, Berkeley), partially in fulfillment of an award from the U.S. Department of Housing and Urban Development. The project was also supported by grant R01NR020854 (MPI Eisenberg and Pollack). Hepburn's involvement is supported by R01NR020748.
+This project was completed by a team comprising of the [Housing Initiative at Penn](https://www.housinginitiative.org/), the [Eviction Lab](https://evictionlab.org/) (Princeton University), and [Urban Displacement Project](https://www.urbandisplacement.org/) (University of California, Berkeley), partially in fulfillment of an award from the U.S. Department of Housing and Urban Development. The project was also supported by grant R01NR020854 (MPI Eisenberg and Pollack). Hepburn's involvement is supported by R01NR020748.
 
 The project team is solely responsible for the analytical decisions made in this project and the accuracy of aggregated files produced by this project. This work does not reflect the views of the U.S. Government or any other funding sources.
 
